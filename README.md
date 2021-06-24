@@ -36,7 +36,11 @@ SeoRenderer(
   text: Text('''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the     1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap       into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,   and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'''),
 ),
 ```
-# ScreenShot
+# ScreenShot & Example
+
+Live example https://seo-renderer.netlify.app/
+
+Select GoogleBot [here's how](https://www.howtogeek.com/113439/how-to-change-your-browsers-user-agent-without-installing-any-extensions/) as userAgent in Network Condition and refresh the page to see created Div Elements.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/iamSahdeep/seo_renderer/master/assets/1.png" width="410" height="440">
