@@ -2,8 +2,10 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'dart:ui' as UI;
 
+///Regex to detect Crawler for Search Engines
 RegExp _regExp = RegExp(r'/bot|google|baidu|bing|msn|teoma|slurp|yandex/i');
 
+/// A GlobalKey Extension to get Rect from the RenderObject from a GlobalKey
 extension GlobalKeyExtension on GlobalKey {
   Rect? get globalPaintBounds {
     final renderObject = currentContext?.findRenderObject();
@@ -17,6 +19,7 @@ extension GlobalKeyExtension on GlobalKey {
   }
 }
 
+/// A Widget to create the HTML Tags from the TEXT widget.
 class SeoRenderer extends StatefulWidget {
   final Text text;
   final RenderController controller;
@@ -69,6 +72,7 @@ class _SeoRendererState extends State<SeoRenderer> {
   }
 }
 
+///Controller class to refresh the position in case of Scrolling
 class RenderController {
   late UI.VoidCallback refresh;
 }
