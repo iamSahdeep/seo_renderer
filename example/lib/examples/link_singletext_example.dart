@@ -10,7 +10,7 @@ class SingleTextLinkExample extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: LinkRenderer(
-          anchorText: 'Some other Anchor Text',
+          anchorText: 'Try Flutter',
           link: 'https://www.flutter.dev',
           child: OutlinedButton(
             onPressed: () {

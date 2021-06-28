@@ -1,30 +1,43 @@
 import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/text_renderer.dart';
-import 'package:seo_renderer/utils.dart';
+import 'dart:ui' as UI;
+
+import 'package:seo_renderer/helpers/utils.dart';
 
 /// A Widget to create the HTML Tags from the TEXT widget.
-class LinkRenderer extends StatefulWidget {
-  final Widget child;
-  final String anchorText;
-  final String link;
+class TextRenderer extends StatefulWidget implements RouteAware{
+  final Text text;
   final RenderController? controller;
 
-  const LinkRenderer(
-      {Key? key,
-      this.controller,
-      required this.child,
-      required this.anchorText,
-      required this.link})
+  const TextRenderer({Key? key, required this.text, this.controller})
       : super(key: key);
 
   @override
-  _LinkRendererState createState() => _LinkRendererState();
+  _TextRendererState createState() => _TextRendererState();
+
+  @override
+  void didPop() {
+    // TODO: implement didPop
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+  }
+
+  @override
+  void didPush() {
+    // TODO: implement didPush
+  }
+
+  @override
+  void didPushNext() {
+    // TODO: implement didPushNext
+  }
 }
 
-class _LinkRendererState extends State<LinkRenderer> {
-  final DivElement div = DivElement();
+class _TextRendererState extends State<TextRenderer> {
+  final DivElement div = new DivElement();
   final key = GlobalKey();
 
   @override
@@ -40,11 +53,8 @@ class _LinkRendererState extends State<LinkRenderer> {
     div.style.top = '${key.globalPaintBounds?.top ?? 0}px';
     div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
     div.style.width = '${key.globalPaintBounds?.width ?? 100}px';
+    div.text = widget.text.data.toString();
     div.style.color = '#ff0000';
-    var anchorElement = new AnchorElement()
-      ..href = widget.link
-      ..text = widget.anchorText;
-    div.children.add(anchorElement);
   }
 
   @override
@@ -52,7 +62,7 @@ class _LinkRendererState extends State<LinkRenderer> {
     return LayoutBuilder(
       key: key,
       builder: (ctx, con) {
-        return widget.child;
+        return widget.text;
       },
     );
   }
@@ -64,4 +74,9 @@ class _LinkRendererState extends State<LinkRenderer> {
     refresh();
     document.body?.insertAdjacentElement('afterEnd', div);
   }
+}
+
+///Controller class to refresh the position in case of Scrolling
+class RenderController {
+  late UI.VoidCallback refresh;
 }
