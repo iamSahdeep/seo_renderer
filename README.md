@@ -1,11 +1,10 @@
-# SEO Renderer 
+# SEO Renderer
 <a href="https://pub.dev/packages/seo_renderer"> <img height="20" alt="Pub" src="https://img.shields.io/pub/v/seo_renderer.svg?style=for-the-badge">
   </a>
 
-A flutter plugin to render text widgets as html for SEO purpose.
+A flutter plugin to render text widgets as html elements for SEO purpose.
 
-Created for issue https://github.com/flutter/flutter/issues/46789 and we can maintain it till Flutter creates something concrete for us :)
-
+Created specifically for issue https://github.com/flutter/flutter/issues/46789 
 It will automatic detect the crawler using regex and navigator userAgent and add the `DivElement`(only) to DOM.
 
 All PR's are welcome :) 
@@ -15,7 +14,7 @@ All PR's are welcome :)
 * Add this to your pubspec.yaml
   ```
   dependencies:
-    seo_renderer: ^0.0.1
+    seo_renderer: ^0.0.2
   
   ```
 * Get the package from Pub:
@@ -30,16 +29,41 @@ All PR's are welcome :)
   ```
   
 # Usage
-Just pass the your `Text` Widget and a `RenderController()` which can be used to refresh in case of Scrollable Content.
+First we need to add a `RouteObserver` to automatically remove Html Elements when popped from the Navigation Stack.
+To do this simply add this line in `MaterialApp`
+```
+navigatorObservers: <RouteObserver<ModalRoute<void>>>[ routeObserver ],
+```
+ps : routeObserver is an object, which can be found in utils.dart file.
+For now there are 2 Widgets, `TextRenderer` & `LinkRenderer`
+ - **TextRenderer**
+   Just pass your `Text` Widget and an optional `RenderController()` which can be used to refresh the content(position) in case of Scrollable Content/ Changed Position .
+    
+    Example : 
+   ```
+   TextRenderer(
+          text: Text(
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
+        ),
+   ```
+  - **LinkRenderer**
+    Need to pass `child : Widget`, `anchorText : String`, `link : String` & an  optional `RenderConroller()`
+    
+    Example : 
+    ```
+        LinkRenderer(
+          anchorText: 'Try Flutter',
+          link: 'https://www.flutter.dev',
+          child: OutlinedButton(
+            onPressed: () {
+              launch('https://www.flutter.dev');
+            },
+            child: Text('Flutter.dev'),
+          ),
+        ),
+    ```
 
-```
-SeoRenderer(
-  controller: RenderController(),
-  text: Text('''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the     1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap       into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,   and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'''),
-),
-```
 # ScreenShot & Example
-
 Live example https://seo-renderer.netlify.app/
 
 Select GoogleBot [here's how](https://www.howtogeek.com/113439/how-to-change-your-browsers-user-agent-without-installing-any-extensions/) as userAgent in Network Condition and refresh the page to see created Div Elements.
@@ -72,3 +96,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+# Author & support
+This project is created by [Sahdeep Singh](https://github.com/iamSahdeep)
+> If you appreciate my work by just sendin me 'Hey' OR you can also connect/endorse me on [LinkedIn](https://www.linkedin.com/in/iamsahdeep/) to keep me motivated.
+
+<img src="https://cdn-images-1.medium.com/max/1200/1*2yFbiGdcACiuLGo4dMKmJw.jpeg" width="90" height="35">
