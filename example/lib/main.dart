@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/seo_renderer.dart';
+import 'package:seo_renderer_example/examples/link_singletext_example.dart';
 import 'package:seo_renderer_example/examples/scrollable_content.dart';
 import 'package:seo_renderer_example/examples/single_text_item.dart';
 
@@ -28,6 +29,12 @@ class MyApp extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => ScrollableContent()));
                 },
                 child: Text('Scrollable Text Content')),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => SingleTextLinkExample()));
+                },
+                child: Text('Single Link Text Item')),
           ],
         ),
       ),
