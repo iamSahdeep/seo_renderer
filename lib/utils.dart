@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 ///Regex to detect Crawler for Search Engines
 RegExp regExpBots = RegExp(r'/bot|google|baidu|bing|msn|teoma|slurp|yandex/i');
 
