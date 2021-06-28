@@ -1,14 +1,20 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/renderers/text_renderer.dart';
 import 'package:seo_renderer/helpers/utils.dart';
 
-/// A Widget to create the HTML Tags from the TEXT widget.
+/// A Widget to create the HTML Tags but with Link (href) from any [Widget].
 class LinkRenderer extends StatefulWidget {
+  ///Any Widget with link in it
   final Widget child;
+
+  ///Anchor Text just like html, will work like a replacement to provided [child] with [link] to it.
   final String anchorText;
+
+  ///link to put in href
   final String link;
+
+  ///Optional : [RenderController] object if you want to perform certain actions.
   final RenderController? controller;
 
   const LinkRenderer(
@@ -43,7 +49,7 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
   void initState() {
     super.initState();
     WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => addDivElement(context));
+        ?.addPostFrameCallback((_) => _addDivElement(context));
     widget.controller?.refresh = refresh;
   }
 
@@ -69,7 +75,7 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
     );
   }
 
-  addDivElement(BuildContext context) {
+  _addDivElement(BuildContext context) {
     if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
       return;
     }

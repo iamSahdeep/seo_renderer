@@ -4,7 +4,10 @@ import 'package:seo_renderer/helpers/utils.dart';
 
 /// A Widget to create the HTML Tags from the TEXT widget.
 class TextRenderer extends StatefulWidget {
+  /// Provide with [Text] widget to get data from it.
   final Text text;
+
+  /// Controller to refresh position in any case you want.
   final RenderController? controller;
 
   const TextRenderer({Key? key, required this.text, this.controller})
