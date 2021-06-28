@@ -44,9 +44,12 @@ class _SeoRendererState extends State<SeoRenderer> {
   }
 
   void refresh() {
+    div.style.position = 'absolute';
     div.style.top = '${key.globalPaintBounds?.top ?? 0}px';
     div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
+    div.style.width = '${key.globalPaintBounds?.width ?? 100}px';
     div.text = widget.text.data.toString();
+    div.style.color = '#ff0000';
   }
 
   @override
@@ -63,11 +66,7 @@ class _SeoRendererState extends State<SeoRenderer> {
     if (!_regExp.hasMatch(window.navigator.userAgent.toString())) {
       return;
     }
-    div.style.position = 'absolute';
-    div.style.top = '${key.globalPaintBounds?.top ?? 0}px';
-    div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
-    div.text = widget.text.data.toString();
-    div.style.color = '#ff0000';
+    refresh();
     document.body?.insertAdjacentElement('afterEnd', div);
   }
 }
