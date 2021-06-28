@@ -20,19 +20,19 @@ extension GlobalKeyExtension on GlobalKey {
 }
 
 /// A Widget to create the HTML Tags from the TEXT widget.
-class SeoRenderer extends StatefulWidget {
+class TextRenderer extends StatefulWidget {
   final Text text;
-  final RenderController controller;
+  final RenderController? controller;
 
-  const SeoRenderer({Key? key, required this.text, required this.controller})
+  const TextRenderer({Key? key, required this.text, required this.controller})
       : super(key: key);
 
   @override
-  _SeoRendererState createState() => _SeoRendererState();
+  _TextRendererState createState() => _TextRendererState();
 }
 
-class _SeoRendererState extends State<SeoRenderer> {
-  DivElement div = new DivElement();
+class _TextRendererState extends State<TextRenderer> {
+  final DivElement div = new DivElement();
   final key = GlobalKey();
 
   @override
@@ -40,7 +40,7 @@ class _SeoRendererState extends State<SeoRenderer> {
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) => addDivElement(context));
-    widget.controller.refresh = refresh;
+    widget.controller?.refresh = refresh;
   }
 
   void refresh() {
