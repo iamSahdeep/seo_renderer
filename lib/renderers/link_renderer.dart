@@ -23,9 +23,21 @@ class LinkRenderer extends StatefulWidget {
   _LinkRendererState createState() => _LinkRendererState();
 }
 
-class _LinkRendererState extends State<LinkRenderer> {
+class _LinkRendererState extends State<LinkRenderer> with RouteAware {
   final DivElement div = DivElement();
   final key = GlobalKey();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -63,5 +75,14 @@ class _LinkRendererState extends State<LinkRenderer> {
     }
     refresh();
     document.body?.insertAdjacentElement('afterEnd', div);
+  }
+
+  @override
+  void didPop() {
+    clearTags();
+  }
+
+  void clearTags() {
+    div.remove();
   }
 }

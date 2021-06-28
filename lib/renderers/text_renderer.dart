@@ -1,11 +1,9 @@
 import 'dart:html';
 import 'package:flutter/material.dart';
-import 'dart:ui' as UI;
-
 import 'package:seo_renderer/helpers/utils.dart';
 
 /// A Widget to create the HTML Tags from the TEXT widget.
-class TextRenderer extends StatefulWidget implements RouteAware{
+class TextRenderer extends StatefulWidget {
   final Text text;
   final RenderController? controller;
 
@@ -14,31 +12,23 @@ class TextRenderer extends StatefulWidget implements RouteAware{
 
   @override
   _TextRendererState createState() => _TextRendererState();
-
-  @override
-  void didPop() {
-    // TODO: implement didPop
-  }
-
-  @override
-  void didPopNext() {
-    // TODO: implement didPopNext
-  }
-
-  @override
-  void didPush() {
-    // TODO: implement didPush
-  }
-
-  @override
-  void didPushNext() {
-    // TODO: implement didPushNext
-  }
 }
 
-class _TextRendererState extends State<TextRenderer> {
+class _TextRendererState extends State<TextRenderer> with RouteAware {
   final DivElement div = new DivElement();
   final key = GlobalKey();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -74,9 +64,13 @@ class _TextRendererState extends State<TextRenderer> {
     refresh();
     document.body?.insertAdjacentElement('afterEnd', div);
   }
-}
 
-///Controller class to refresh the position in case of Scrolling
-class RenderController {
-  late UI.VoidCallback refresh;
+  void clearTags() {
+    div.remove();
+  }
+
+  @override
+  void didPop() {
+    clearTags();
+  }
 }

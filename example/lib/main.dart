@@ -5,7 +5,12 @@ import 'package:seo_renderer_example/examples/scrollable_content.dart';
 import 'package:seo_renderer_example/examples/single_text_item.dart';
 
 void main() {
-  runApp(MaterialApp(home: MyApp()));
+  runApp(MaterialApp(
+    navigatorObservers: [
+      routeObserver
+    ],
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
