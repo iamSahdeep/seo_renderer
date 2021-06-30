@@ -14,7 +14,7 @@ All PR's are welcome :)
 * Add this to your pubspec.yaml
   ```
   dependencies:
-    seo_renderer: ^0.0.2
+    seo_renderer: ^0.0.3
   
   ```
 * Get the package from Pub:

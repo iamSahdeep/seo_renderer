@@ -1,6 +1,6 @@
 name: seo_renderer
 description: A flutter plugin to render text widgets as html for SEO purpose.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/iamSahdeep/seo_renderer
 
 environment:
@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_html: ^2.1.0
 
 dev_dependencies:
   flutter_test:
