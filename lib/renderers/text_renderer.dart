@@ -65,7 +65,12 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
       return;
     }
     refresh();
-    document.body?.insertAdjacentElement('afterEnd', div);
+    document.body?.append(div);
+  }
+
+  @override
+  void didPush() {
+    clearTags();
   }
 
   void clearTags() {

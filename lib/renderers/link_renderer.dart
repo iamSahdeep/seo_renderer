@@ -80,11 +80,16 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
       return;
     }
     refresh();
-    document.body?.insertAdjacentElement('afterEnd', div);
+    document.body?.append(div);
   }
 
   @override
   void didPop() {
+    clearTags();
+  }
+
+  @override
+  void didPush() {
     clearTags();
   }
 

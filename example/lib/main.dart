@@ -6,9 +6,7 @@ import 'package:seo_renderer_example/examples/single_text_item.dart';
 
 void main() {
   runApp(MaterialApp(
-    navigatorObservers: [
-      routeObserver
-    ],
+    navigatorObservers: [routeObserver],
     home: MyApp(),
   ));
 }
@@ -27,19 +25,19 @@ class MyApp extends StatelessWidget {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => SingleTextItem()));
                 },
-                child: Text('Single Text Item')),
+                child: TextRenderer(text: Text('Single Text Item'))),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => ScrollableContent()));
                 },
-                child: Text('Scrollable Text Content')),
+                child: TextRenderer(text: Text('Scrollable Text Content'))),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => SingleTextLinkExample()));
                 },
-                child: Text('Single Link Text Item')),
+                child: TextRenderer(text: Text('Single Link Text Item'))),
           ],
         ),
       ),
