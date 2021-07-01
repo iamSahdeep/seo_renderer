@@ -2,7 +2,7 @@
 <a href="https://pub.dev/packages/seo_renderer"> <img height="20" alt="Pub" src="https://img.shields.io/pub/v/seo_renderer.svg?style=for-the-badge">
   </a>
 
-A flutter plugin to render text widgets as html elements for SEO purpose.
+A flutter plugin (*under development*) to render text widgets as html elements for SEO purpose.
 
 Created specifically for issue https://github.com/flutter/flutter/issues/46789 
 It will automatic detect the crawler using regex and navigator userAgent and add the `DivElement`(only) to DOM.
@@ -14,7 +14,7 @@ All PR's are welcome :)
 * Add this to your pubspec.yaml
   ```
   dependencies:
-    seo_renderer: ^0.0.3
+    seo_renderer: ^0.0.4
   
   ```
 * Get the package from Pub:

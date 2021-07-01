@@ -1,3 +1,6 @@
+## 0.0.4
+
+* making more route aware
 
 ## 0.0.3
 
