@@ -29,6 +29,7 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
 
   @override
   void dispose() {
+    clearTags();
     routeObserver.unsubscribe(this);
     super.dispose();
   }
@@ -36,9 +37,31 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => addDivElement(context));
     widget.controller?.refresh = refresh;
+  }
+
+  @override
+  void didPop() {
+    clearTags();
+    super.didPop();
+  }
+
+  @override
+  void didPush() {
+    addDivElement();
+    super.didPush();
+  }
+
+  @override
+  void didPopNext() {
+    addDivElement();
+    super.didPopNext();
+  }
+
+  @override
+  void didPushNext() {
+    clearTags();
+    super.didPushNext();
   }
 
   void refresh() {
@@ -53,32 +76,23 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      key: key,
-      builder: (ctx, con) {
-        return widget.text;
-      },
-    );
+        key: key,
+        builder: (_, __) {
+          return widget.text;
+        });
   }
 
-  addDivElement(BuildContext context) {
-    if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
-      return;
-    }
-    refresh();
-    document.body?.append(div);
-  }
-
-  @override
-  void didPush() {
-    clearTags();
+  addDivElement() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
+        return;
+      }
+      refresh();
+      if (!document.body!.contains(div)) document.body?.append(div);
+    });
   }
 
   void clearTags() {
     div.remove();
-  }
-
-  @override
-  void didPop() {
-    clearTags();
   }
 }

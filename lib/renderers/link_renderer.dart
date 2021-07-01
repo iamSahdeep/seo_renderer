@@ -42,15 +42,38 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
+    clear();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => _addDivElement(context));
     widget.controller?.refresh = refresh;
+  }
+
+  @override
+  void didPop() {
+    clear();
+    super.didPop();
+  }
+
+  @override
+  void didPush() {
+    addDivElement();
+    super.didPush();
+  }
+
+  @override
+  void didPopNext() {
+    addDivElement();
+    super.didPopNext();
+  }
+
+  @override
+  void didPushNext() {
+    clear();
+    super.didPushNext();
   }
 
   void refresh() {
@@ -62,38 +85,30 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
     var anchorElement = new AnchorElement()
       ..href = widget.link
       ..text = widget.anchorText;
-    div.children.add(anchorElement);
+    div.children.removeWhere((element) => true);
+    div.append(anchorElement);
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      key: key,
-      builder: (ctx, con) {
-        return widget.child;
-      },
-    );
+        key: key,
+        builder: (_, __) {
+          return widget.child;
+        });
   }
 
-  _addDivElement(BuildContext context) {
-    if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
-      return;
-    }
-    refresh();
-    document.body?.append(div);
+  addDivElement() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
+        return;
+      }
+      refresh();
+      if (!document.body!.contains(div)) document.body?.append(div);
+    });
   }
 
-  @override
-  void didPop() {
-    clearTags();
-  }
-
-  @override
-  void didPush() {
-    clearTags();
-  }
-
-  void clearTags() {
+  void clear() {
     div.remove();
   }
 }
