@@ -13,7 +13,7 @@ class TextRenderer extends StatefulWidget {
   }) : super(key: key);
 
   /// Provide with [Text] widget to get data from it.
-  final Text text;
+  final Widget text;
 
   /// Controller to refresh position in any case you want.
   final RenderController? controller;
@@ -74,7 +74,7 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
     div.style.top = '${key.globalPaintBounds?.top ?? 0}px';
     div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
     div.style.width = '${key.globalPaintBounds?.width ?? 100}px';
-    div.text = widget.text.data.toString();
+    div.text = _getTextFromWidget().toString();
     div.style.color = '#ff0000';
   }
 
@@ -99,5 +99,28 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
 
   void clear() {
     div.remove();
+  }
+
+  String? _getTextFromWidget() {
+    if (widget.text is Text) {
+      Text wid = (widget.text as Text);
+      String? data;
+      data = wid.data;
+      if (data != null) {
+        return data;
+      }
+      if (wid.textSpan != null) {
+        data = wid.textSpan!.toPlainText();
+      }
+      if (data != null) {
+        return data;
+      }
+    }
+    if (widget.text is RichText) {
+      return (widget.text as RichText).text.toPlainText();
+    }
+
+    throw FlutterError(
+        'Provided Widget is of Type ${widget.text.runtimeType}. Only supported widget is Text & RichText.');
   }
 }

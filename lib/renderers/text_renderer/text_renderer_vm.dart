@@ -13,7 +13,7 @@ class TextRenderer extends StatelessWidget {
   }) : super(key: key);
 
   /// Provide with [Text] widget to get data from it.
-  final Text text;
+  final Widget text;
 
   /// Controller to refresh position in any case you want.
   final RenderController? controller;
