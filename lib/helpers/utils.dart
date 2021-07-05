@@ -25,4 +25,5 @@ extension GlobalKeyExtension on GlobalKey {
 ///[refresh] method to reposition the html tags in case widget is displaced somewhere.
 class RenderController {
   late VoidCallback refresh;
+  late VoidCallback clear;
 }

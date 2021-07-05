@@ -25,16 +25,16 @@ class ScrollableContent extends StatelessWidget {
         child: SingleChildScrollView(
           controller: ScrollController()
             ..addListener(() {
-              _controller.refresh.call();
-              _controller1.refresh.call();
-              _controller2.refresh.call();
-              _controller3.refresh.call();
-              _controller4.refresh.call();
-              _controller5.refresh.call();
-              _controller6.refresh.call();
-              _controller7.refresh.call();
-              _controller8.refresh.call();
-              _controller9.refresh.call();
+              _controller.refresh();
+              _controller1.refresh();
+              _controller2.refresh();
+              _controller3.refresh();
+              _controller4.refresh();
+              _controller5.refresh();
+              _controller6.refresh();
+              _controller7.refresh();
+              _controller8.refresh();
+              _controller9.refresh();
             }),
           child: Column(
             children: [

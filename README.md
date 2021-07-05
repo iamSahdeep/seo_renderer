@@ -37,7 +37,7 @@ navigatorObservers: <RouteObserver<ModalRoute<void>>>[ routeObserver ],
 ps : routeObserver is an object, which can be found in utils.dart file.
 For now there are 2 Widgets, `TextRenderer` & `LinkRenderer`
  - **TextRenderer**
-   Just pass your `Text` Widget and an optional `RenderController()` which can be used to refresh the content(position) in case of Scrollable Content/ Changed Position .
+   Just pass your `Text`/`RichText` Widget and an optional `RenderController()` which can be used to refresh the content(position) in case of Scrollable Content/ Changed Position .
     
     Example : 
    ```

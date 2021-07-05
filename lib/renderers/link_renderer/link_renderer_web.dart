@@ -51,6 +51,7 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
   void initState() {
     super.initState();
     widget.controller?.refresh = refresh;
+    widget.controller?.clear = clear;
   }
 
   @override

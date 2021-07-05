@@ -12,7 +12,7 @@ class TextRenderer extends StatefulWidget {
     this.controller,
   }) : super(key: key);
 
-  /// Provide with [Text] widget to get data from it.
+  /// Provide with [Widget] widget to get data from it.
   final Widget text;
 
   /// Controller to refresh position in any case you want.
@@ -43,6 +43,7 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
   void initState() {
     super.initState();
     widget.controller?.refresh = refresh;
+    widget.controller?.clear = clear;
   }
 
   @override
