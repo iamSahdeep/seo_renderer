@@ -14,7 +14,7 @@ All PR's are welcome :)
 * Add this to your pubspec.yaml
   ```
   dependencies:
-    seo_renderer: ^0.0.4
+    seo_renderer: ^0.1.0
   
   ```
 * Get the package from Pub:
@@ -62,7 +62,11 @@ For now there are 2 Widgets, `TextRenderer` & `LinkRenderer`
           ),
         ),
     ```
-
+RenderController have 2 methods
+ - `refresh()` : Useful in case Widget changes position and you want it too.
+ - `clear()` : Sometimes on Push operation Html Elements can't be removed. Please use this in your Push Operation.
+ 
+  
 # ScreenShot & Example
 Live example https://seo-renderer.netlify.app/
 
@@ -99,6 +103,6 @@ SOFTWARE.
 
 # Author & support
 This project is created by [Sahdeep Singh](https://github.com/iamSahdeep)
-> If you appreciate my work by just sendin me 'Hey' OR you can also connect/endorse me on [LinkedIn](https://www.linkedin.com/in/iamsahdeep/) to keep me motivated.
+> If you appreciate my work you can connect and endorse me on [LinkedIn](https://www.linkedin.com/in/iamsahdeep/) to keep me motivated :)
 
 <img src="https://cdn-images-1.medium.com/max/1200/1*2yFbiGdcACiuLGo4dMKmJw.jpeg" width="90" height="35">

@@ -1,3 +1,9 @@
+## 0.1.0
+
+* Conditional Import in case of VM
+* Support of RichText & Text.rich()
+* Added clear() method to Controller
+
 ## 0.0.4
 
 * making more route aware
