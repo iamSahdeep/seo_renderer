@@ -3,47 +3,39 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/helpers/utils.dart';
 
-/// A Widget to create the HTML Tags but with Link (href) from any [Widget].
-class LinkRenderer extends StatefulWidget {
-  /// Default [LinkRenderer] const constructor.
-  const LinkRenderer({
+/// A Widget to create the HTML Tags from the TEXT widget.
+class TextRenderer extends StatefulWidget {
+  /// Default [TextRenderer] const constructor.
+  const TextRenderer({
     Key? key,
+    required this.text,
     this.controller,
-    required this.child,
-    required this.anchorText,
-    required this.link,
   }) : super(key: key);
 
-  ///Any Widget with link in it
-  final Widget child;
+  /// Provide with [Text] widget to get data from it.
+  final Text text;
 
-  ///Anchor Text just like html, will work like a replacement to provided [child] with [link] to it.
-  final String anchorText;
-
-  ///link to put in href
-  final String link;
-
-  ///Optional : [RenderController] object if you want to perform certain actions.
+  /// Controller to refresh position in any case you want.
   final RenderController? controller;
 
   @override
-  _LinkRendererState createState() => _LinkRendererState();
+  _TextRendererState createState() => _TextRendererState();
 }
 
-class _LinkRendererState extends State<LinkRenderer> with RouteAware {
-  final DivElement div = DivElement();
+class _TextRendererState extends State<TextRenderer> with RouteAware {
+  final DivElement div = new DivElement();
   final key = GlobalKey();
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     routeObserver.subscribe(this, ModalRoute.of(context)!);
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    routeObserver.unsubscribe(this);
     clear();
+    routeObserver.unsubscribe(this);
     super.dispose();
   }
 
@@ -82,12 +74,8 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
     div.style.top = '${key.globalPaintBounds?.top ?? 0}px';
     div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
     div.style.width = '${key.globalPaintBounds?.width ?? 100}px';
+    div.text = widget.text.data.toString();
     div.style.color = '#ff0000';
-    var anchorElement = new AnchorElement()
-      ..href = widget.link
-      ..text = widget.anchorText;
-    div.children.removeWhere((element) => true);
-    div.append(anchorElement);
   }
 
   @override
@@ -95,7 +83,7 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
     return LayoutBuilder(
         key: key,
         builder: (_, __) {
-          return widget.child;
+          return widget.text;
         });
   }
 
