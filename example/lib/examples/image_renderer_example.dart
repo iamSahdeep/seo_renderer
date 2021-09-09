@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/renderers/image_renderer/image_renderer_web.dart';
+import 'package:seo_renderer/renderers/image_renderer/image_renderer.dart';
 
 class ImageRendererExample extends StatelessWidget {
   const ImageRendererExample({Key? key}) : super(key: key);
