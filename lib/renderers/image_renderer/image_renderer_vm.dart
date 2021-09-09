@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/helpers/utils.dart';
 
-/// A Widget to create the HTML Tags but with Link (href) from any [Widget].
-///
 /// This VM import stub does nothing and only returns the child.
 class ImageRenderer extends StatelessWidget {
   /// Default [ImageRenderer] const constructor.
@@ -14,14 +12,13 @@ class ImageRenderer extends StatelessWidget {
     required this.alt,
   }) : super(key: key);
 
-  ///Any Widget with link in it
+  ///Any Widget with image in it
   final Widget child;
 
-  ///Anchor Text just like html, will work like a replacement to
-  ///provided [child] with [link] to it.
+  ///Image source
   final String link;
 
-  ///link to put in href
+  ///Alternative to image
   final String alt;
 
   ///Optional : [RenderController] object if you want to perform certain actions.
