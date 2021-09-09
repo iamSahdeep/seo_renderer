@@ -87,9 +87,9 @@ class _ImageRendererState extends State<ImageRenderer> with RouteAware {
     div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
     var imageElement = new ImageElement()
       ..src = widget.link
-      ..text = widget.alt
-      ..width = (key.globalPaintBounds?.width ?? 100) as int?
-      ..height = (key.globalPaintBounds?.height ?? 100) as int?;
+      ..alt = widget.alt
+      ..width = (key.globalPaintBounds?.width ?? 100).toInt()
+      ..height = (key.globalPaintBounds?.height ?? 100).toInt();
     div.children.removeWhere((element) => true);
     div.append(imageElement);
   }
@@ -99,7 +99,14 @@ class _ImageRendererState extends State<ImageRenderer> with RouteAware {
     return LayoutBuilder(
         key: key,
         builder: (_, __) {
-          return widget.child;
+          return NotificationListener(
+              onNotification: (SizeChangedLayoutNotification notification) {
+                WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                  refresh();
+                });
+                return true;
+              },
+              child: SizeChangedLayoutNotifier(child: widget.child));
         });
   }
 
