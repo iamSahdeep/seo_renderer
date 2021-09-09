@@ -3,8 +3,6 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/helpers/utils.dart';
 
-/// A Widget to create the HTML Tags but with Link (href) from any [Widget].
-///
 /// This VM import stub does nothing and only returns the child.
 class ImageRenderer extends StatefulWidget {
   /// Default [ImageRenderer] const constructor.

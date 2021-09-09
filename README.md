@@ -14,7 +14,7 @@ All PR's are welcome :)
 * Add this to your pubspec.yaml
   ```
   dependencies:
-    seo_renderer: ^0.1.0
+    seo_renderer: ^0.2.0
   
   ```
 * Get the package from Pub:
@@ -35,7 +35,8 @@ To do this simply add this line in `MaterialApp`
 navigatorObservers: <RouteObserver<ModalRoute<void>>>[ routeObserver ],
 ```
 ps : routeObserver is an object, which can be found in utils.dart file.
-For now there are 2 Widgets, `TextRenderer` & `LinkRenderer`
+
+There are 3 Widgets, `TextRenderer`, `LinkRenderer` & `ImageRenderer`
  - **TextRenderer**
    Just pass your `Text`/`RichText` Widget and an optional `RenderController()` which can be used to refresh the content(position) in case of Scrollable Content/ Changed Position .
     
@@ -60,6 +61,20 @@ For now there are 2 Widgets, `TextRenderer` & `LinkRenderer`
             },
             child: Text('Flutter.dev'),
           ),
+        ),
+    ```
+  - **ImageRenderer**
+    Need to pass `child : Widget`, `link : String`, `alt : String` & an  optional `RenderConroller()`
+
+    Example :
+    ```
+        ImageRenderer(
+            alt: 'Flutter logo',
+            link:
+                'https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png',
+            child: Image.network(
+                "https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png"
+            ),
         ),
     ```
 RenderController have 2 methods
