@@ -1,4 +1,7 @@
-## 0.1.0
+# 0.2.0
+* Included ImageRenderer
+
+# 0.1.0
 
 * Conditional Import in case of VM
 * Support of RichText & Text.rich()
