@@ -23,7 +23,7 @@ class TextRenderer extends StatefulWidget {
 }
 
 class _TextRendererState extends State<TextRenderer> with RouteAware {
-  final DivElement div = new DivElement();
+  final ParagraphElement element = new ParagraphElement();
   final key = GlobalKey();
 
   @override
@@ -54,13 +54,13 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
 
   @override
   void didPush() {
-    addDivElement();
+    addElement();
     super.didPush();
   }
 
   @override
   void didPopNext() {
-    addDivElement();
+    addElement();
     super.didPopNext();
   }
 
@@ -71,12 +71,12 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
   }
 
   void refresh() {
-    div.style.position = 'absolute';
-    div.style.top = '${key.globalPaintBounds?.top ?? 0}px';
-    div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
-    div.style.width = '${key.globalPaintBounds?.width ?? 100}px';
-    div.text = _getTextFromWidget().toString();
-    div.style.color = '#ff0000';
+    element.style.position = 'absolute';
+    element.style.top = '${key.globalPaintBounds?.top ?? 0}px';
+    element.style.left = '${key.globalPaintBounds?.left ?? 0}px';
+    element.style.width = '${key.globalPaintBounds?.width ?? 100}px';
+    element.text = _getTextFromWidget().toString();
+    element.style.color = '#ff0000';
   }
 
   @override
@@ -88,18 +88,18 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
         });
   }
 
-  addDivElement() {
+  addElement() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
         return;
       }
       refresh();
-      if (!document.body!.contains(div)) document.body?.append(div);
+      if (!document.body!.contains(element)) document.body?.append(element);
     });
   }
 
   void clear() {
-    div.remove();
+    element.remove();
   }
 
   String? _getTextFromWidget() {
