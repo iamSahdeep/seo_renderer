@@ -104,7 +104,7 @@ Select GoogleBot [here's how](https://www.howtogeek.com/113439/how-to-change-you
 <img src="https://raw.githubusercontent.com/iamSahdeep/seo_renderer/master/assets/1.png" width="410" height="440">
 </p>
 
-# License
+## License
 
 ```text
 MIT License
