@@ -6,7 +6,7 @@
 A flutter plugin (_under development_) to render text widgets as html elements for SEO purpose.
 
 Created specifically for issue <https://github.com/flutter/flutter/issues/46789>
-It will automatic detect the crawler using regex and navigator userAgent and add the `DivElement`(only) to DOM.
+It will automatic detect the crawler using regex and navigator userAgent and add the `HtmlElement` you choose to the DOM.
 
 All PR's are welcome :)
 
@@ -44,52 +44,68 @@ ps : routeObserver is an object, which can be found in utils.dart file.
 
 There are 3 Widgets, `TextRenderer`, `LinkRenderer` & `ImageRenderer`
 
-- **TextRenderer**
-  Just pass your `Text`/`RichText` Widget and an optional `RenderController()` which can be used to refresh the content(position) in case of Scrollable Content/ Changed Position .
-  Example :
+### TextRenderer
 
-  ```dart
-  TextRenderer(
-         text: Text(
-             'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
-       ),
-  ```
+**TextRenderer**
+Just pass the element `new ParagraphElement()`, `new HeadingElement()` or one of other HtmlElement and your `Text`/`RichText` Widget and an optional `RenderController()` which can be used to refresh the content(position) in case of Scrollable Content/ Changed Position .
 
-- **LinkRenderer**
-  Need to pass `child : Widget`, `anchorText : String`, `link : String` & an optional `RenderConroller()`
+#### Paragraph
 
-  Example :
+```dart
+TextRenderer(
+  element: new ParagraphElement(),
+  text: Text(
+      'Paragraph: Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
+),
+```
 
-  ```dart
-      LinkRenderer(
-        anchorText: 'Try Flutter',
-        link: 'https://www.flutter.dev',
-        child: OutlinedButton(
-          onPressed: () {
-            launch('https://www.flutter.dev');
-          },
-          child: Text('Flutter.dev'),
-        ),
-      ),
-  ```
+#### Heading
 
-- **ImageRenderer**
-  Need to pass `child : Widget`, `link : String`, `alt : String` & an optional `RenderConroller()`
+```dart
+TextRenderer(
+  element: new HeadingElement.h1(),
+  text: Text(
+      'Heading H1: Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
+),
+```
 
-  Example :
+### LinkRenderer
 
-  ```dart
-      ImageRenderer(
-          alt: 'Flutter logo',
-          link:
-              'https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png',
-          child: Image.network(
-              "https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png"
-          ),
-      ),
-  ```
+Need to pass `child : Widget`, `anchorText : String`, `link : String` & an optional `RenderConroller()`
 
-  RenderController have 2 methods
+Example :
+
+```dart
+LinkRenderer(
+  anchorText: 'Try Flutter',
+  link: 'https://www.flutter.dev',
+  child: OutlinedButton(
+    onPressed: () {
+      launch('https://www.flutter.dev');
+    },
+    child: Text('Flutter.dev'),
+  ),
+),
+```
+
+### ImageRenderer
+
+Need to pass `child : Widget`, `link : String`, `alt : String` & an optional `RenderConroller()`
+
+Example :
+
+```dart
+ImageRenderer(
+  alt: 'Flutter logo',
+  link:
+      'https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png',
+  child: Image.network(
+      "https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png"
+  ),
+),
+```
+
+RenderController have 2 methods
 
 - `refresh()` : Useful in case Widget changes position and you want it too.
 - `clear()` : Sometimes on Push operation Html Elements can't be removed. Please use this in your Push Operation.
