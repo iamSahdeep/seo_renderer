@@ -28,33 +28,25 @@ class MyApp extends StatelessWidget {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => SingleTextItem()));
                 },
-                child: TextRenderer(
-                    element: new ParagraphElement(),
-                    text: Text('Single Text Item'))),
+                child: TextRenderer(text: Text('Single Text Item'))),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => ScrollableContent()));
                 },
-                child: TextRenderer(
-                    element: new ParagraphElement(),
-                    text: Text('Scrollable Text Content'))),
+                child: TextRenderer(text: Text('Scrollable Text Content'))),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => SingleTextLinkExample()));
                 },
-                child: TextRenderer(
-                    element: new ParagraphElement(),
-                    text: Text('Single Link Text Item'))),
+                child: TextRenderer(text: Text('Single Link Text Item'))),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => ImageRendererExample()));
                 },
-                child: TextRenderer(
-                    element: new ParagraphElement(),
-                    text: Text('Image renderer'))),
+                child: TextRenderer(text: Text('Image renderer'))),
           ],
         ),
       ),
