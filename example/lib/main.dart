@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/seo_renderer.dart';
 import 'package:seo_renderer_example/examples/image_renderer_example.dart';
@@ -26,25 +28,33 @@ class MyApp extends StatelessWidget {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => SingleTextItem()));
                 },
-                child: TextRenderer(text: Text('Single Text Item'))),
+                child: TextRenderer(
+                    element: new ParagraphElement(),
+                    text: Text('Single Text Item'))),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => ScrollableContent()));
                 },
-                child: TextRenderer(text: Text('Scrollable Text Content'))),
+                child: TextRenderer(
+                    element: new ParagraphElement(),
+                    text: Text('Scrollable Text Content'))),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => SingleTextLinkExample()));
                 },
-                child: TextRenderer(text: Text('Single Link Text Item'))),
+                child: TextRenderer(
+                    element: new ParagraphElement(),
+                    text: Text('Single Link Text Item'))),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => ImageRendererExample()));
                 },
-                child: TextRenderer(text: Text('Image renderer'))),
+                child: TextRenderer(
+                    element: new ParagraphElement(),
+                    text: Text('Image renderer'))),
           ],
         ),
       ),

@@ -3,11 +3,12 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/helpers/utils.dart';
 
-/// A Widget to create the HTML Tags from the TEXT widget.
+/// A Widget to create the HtmlElement Tags from the TEXT widget.
 class TextRenderer extends StatefulWidget {
   /// Default [TextRenderer] const constructor.
   const TextRenderer({
     Key? key,
+    required this.element,
     required this.text,
     this.controller,
   }) : super(key: key);
@@ -15,15 +16,22 @@ class TextRenderer extends StatefulWidget {
   /// Provide with [Widget] widget to get data from it.
   final Widget text;
 
+  /// HtmlElement freqently use for text:
+  /// - new ParagraphElement()
+  /// - new HeadingElement.h1() tp h6()
+  final HtmlElement element;
+
   /// Controller to refresh position in any case you want.
   final RenderController? controller;
 
   @override
-  _TextRendererState createState() => _TextRendererState();
+  _TextRendererState createState() => _TextRendererState(element: element);
 }
 
 class _TextRendererState extends State<TextRenderer> with RouteAware {
-  final ParagraphElement element = new ParagraphElement();
+  _TextRendererState({required this.element});
+
+  final HtmlElement element;
   final key = GlobalKey();
 
   @override
@@ -72,9 +80,12 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
 
   void refresh() {
     element.style.position = 'absolute';
+    element.style.fontSize = '14px';
     element.style.top = '${key.globalPaintBounds?.top ?? 0}px';
     element.style.left = '${key.globalPaintBounds?.left ?? 0}px';
     element.style.width = '${key.globalPaintBounds?.width ?? 100}px';
+    element.style.margin = '0px';
+    element.style.padding = '0px';
     element.text = _getTextFromWidget().toString();
     element.style.color = '#ff0000';
   }
