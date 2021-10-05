@@ -8,8 +8,8 @@ class TextRenderer extends StatefulWidget {
   /// Default [TextRenderer] const constructor.
   const TextRenderer({
     Key? key,
-    required this.element,
     required this.text,
+    this.element,
     this.controller,
   }) : super(key: key);
 
@@ -17,15 +17,17 @@ class TextRenderer extends StatefulWidget {
   final Widget text;
 
   /// HtmlElement freqently use for text:
+  /// - Default: new ParagraphElement()
   /// - new ParagraphElement()
   /// - new HeadingElement.h1() tp h6()
-  final HtmlElement element;
+  final HtmlElement? element;
 
   /// Controller to refresh position in any case you want.
   final RenderController? controller;
 
   @override
-  _TextRendererState createState() => _TextRendererState(element: element);
+  _TextRendererState createState() =>
+      _TextRendererState(element: element ?? new ParagraphElement());
 }
 
 class _TextRendererState extends State<TextRenderer> with RouteAware {

@@ -53,7 +53,7 @@ Just pass the element `new ParagraphElement()`, `new HeadingElement()` or one of
 
 ```dart
 TextRenderer(
-  element: new ParagraphElement(),
+  element: new ParagraphElement(), // This is ParagraphElement by default
   text: Text(
       'Paragraph: Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
 ),
