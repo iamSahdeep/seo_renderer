@@ -1,3 +1,6 @@
+# 0.3.0
+* Added Element type with paragraph as default. see PR #6
+
 # 0.2.0
 * Included ImageRenderer
 
