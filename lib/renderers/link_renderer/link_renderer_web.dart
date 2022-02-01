@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:seo_renderer/helpers/scroll_aware.dart';
 import 'package:seo_renderer/helpers/utils.dart';
 
 /// A Widget to create the HTML Tags but with Link (href) from any [Widget].
@@ -8,7 +9,6 @@ class LinkRenderer extends StatefulWidget {
   /// Default [LinkRenderer] const constructor.
   const LinkRenderer({
     Key? key,
-    this.controller,
     required this.child,
     required this.anchorText,
     required this.link,
@@ -23,35 +23,28 @@ class LinkRenderer extends StatefulWidget {
   ///link to put in href
   final String link;
 
-  ///Optional : [RenderController] object if you want to perform certain actions.
-  final RenderController? controller;
-
   @override
   _LinkRendererState createState() => _LinkRendererState();
 }
 
-class _LinkRendererState extends State<LinkRenderer> with RouteAware {
+class _LinkRendererState extends State<LinkRenderer>
+    with RouteAware, ScrollAware {
   final DivElement div = DivElement();
   final key = GlobalKey();
 
   @override
   void didChangeDependencies() {
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
     super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+    subscribe(context);
   }
 
   @override
   void dispose() {
     clear();
     routeObserver.unsubscribe(this);
+    unsubscribe();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    widget.controller?.refresh = refresh;
-    widget.controller?.clear = clear;
   }
 
   @override
@@ -76,6 +69,11 @@ class _LinkRendererState extends State<LinkRenderer> with RouteAware {
   void didPushNext() {
     clear();
     super.didPushNext();
+  }
+
+  @override
+  void didScroll() {
+    refresh();
   }
 
   void refresh() {

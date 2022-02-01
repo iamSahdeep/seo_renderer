@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/seo_renderer.dart';
 import 'package:seo_renderer_example/examples/image_renderer_example.dart';

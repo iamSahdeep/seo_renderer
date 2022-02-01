@@ -47,7 +47,7 @@ There are 3 Widgets, `TextRenderer`, `LinkRenderer` & `ImageRenderer`
 ### TextRenderer
 
 **TextRenderer**
-Just pass the element `new ParagraphElement()`, `new HeadingElement()` or one of other HtmlElement and your `Text`/`RichText` Widget and an optional `RenderController()` which can be used to refresh the content(position) in case of Scrollable Content/ Changed Position .
+Just pass the element `new ParagraphElement()`, `new HeadingElement()` or one of other HtmlElement and your `Text`/`RichText` Widget.
 
 #### Paragraph
 
@@ -71,7 +71,7 @@ TextRenderer(
 
 ### LinkRenderer
 
-Need to pass `child : Widget`, `anchorText : String`, `link : String` & an optional `RenderConroller()`
+Need to pass `child : Widget`, `anchorText : String`, `link : String`
 
 Example :
 
@@ -90,7 +90,7 @@ LinkRenderer(
 
 ### ImageRenderer
 
-Need to pass `child : Widget`, `link : String`, `alt : String` & an optional `RenderConroller()`
+Need to pass `child : Widget`, `link : String`, `alt : String`
 
 Example :
 

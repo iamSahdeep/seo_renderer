@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:seo_renderer/helpers/scroll_aware.dart';
 import 'package:seo_renderer/helpers/utils.dart';
 
 /// This VM import stub does nothing and only returns the child.
@@ -8,7 +9,6 @@ class ImageRenderer extends StatefulWidget {
   /// Default [ImageRenderer] const constructor.
   const ImageRenderer({
     Key? key,
-    this.controller,
     required this.child,
     required this.link,
     required this.alt,
@@ -23,35 +23,28 @@ class ImageRenderer extends StatefulWidget {
   ///Alternative to image
   final String alt;
 
-  ///Optional : [RenderController] object if you want to perform certain actions.
-  final RenderController? controller;
-
   @override
   _ImageRendererState createState() => _ImageRendererState();
 }
 
-class _ImageRendererState extends State<ImageRenderer> with RouteAware {
+class _ImageRendererState extends State<ImageRenderer>
+    with RouteAware, ScrollAware {
   final DivElement div = DivElement();
   final key = GlobalKey();
 
   @override
   void didChangeDependencies() {
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
     super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+    subscribe(context);
   }
 
   @override
   void dispose() {
     clear();
     routeObserver.unsubscribe(this);
+    unsubscribe();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    widget.controller?.refresh = refresh;
-    widget.controller?.clear = clear;
   }
 
   @override
@@ -76,6 +69,11 @@ class _ImageRendererState extends State<ImageRenderer> with RouteAware {
   void didPushNext() {
     clear();
     super.didPushNext();
+  }
+
+  @override
+  void didScroll() {
+    refresh();
   }
 
   void refresh() {

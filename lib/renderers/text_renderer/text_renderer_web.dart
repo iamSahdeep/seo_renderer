@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:seo_renderer/helpers/scroll_aware.dart';
 import 'package:seo_renderer/helpers/utils.dart';
 
 /// A Widget to create the HtmlElement Tags from the TEXT widget.
@@ -10,7 +11,6 @@ class TextRenderer extends StatefulWidget {
     Key? key,
     required this.text,
     this.element,
-    this.controller,
   }) : super(key: key);
 
   /// Provide with [Widget] widget to get data from it.
@@ -22,15 +22,13 @@ class TextRenderer extends StatefulWidget {
   /// - new HeadingElement.h1() tp h6()
   final HtmlElement? element;
 
-  /// Controller to refresh position in any case you want.
-  final RenderController? controller;
-
   @override
   _TextRendererState createState() =>
       _TextRendererState(element: element ?? new ParagraphElement());
 }
 
-class _TextRendererState extends State<TextRenderer> with RouteAware {
+class _TextRendererState extends State<TextRenderer>
+    with RouteAware, ScrollAware {
   _TextRendererState({required this.element});
 
   final HtmlElement element;
@@ -38,22 +36,17 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
 
   @override
   void didChangeDependencies() {
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
     super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+    subscribe(context);
   }
 
   @override
   void dispose() {
     clear();
     routeObserver.unsubscribe(this);
+    unsubscribe();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    widget.controller?.refresh = refresh;
-    widget.controller?.clear = clear;
   }
 
   @override
@@ -78,6 +71,11 @@ class _TextRendererState extends State<TextRenderer> with RouteAware {
   void didPushNext() {
     clear();
     super.didPushNext();
+  }
+
+  @override
+  void didScroll() {
+    refresh();
   }
 
   void refresh() {
