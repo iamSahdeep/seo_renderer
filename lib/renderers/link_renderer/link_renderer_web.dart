@@ -61,7 +61,12 @@ class _LinkRendererState extends State<LinkRenderer> {
     return SizedBox(
       width: _size!.width,
       height: _size!.height,
-      child: HtmlElementView(viewType: viewType),
+      child: Stack(
+        children: [
+          Positioned.fill(child: widget.child),
+          Positioned.fill(child: HtmlElementView(viewType: viewType)),
+        ],
+      ),
     );
   }
 }
