@@ -1,8 +1,10 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/helpers/scroll_aware.dart';
-import 'package:seo_renderer/helpers/utils.dart';
+import 'package:seo_renderer/helpers/robot_detector_web.dart';
+import 'package:seo_renderer/helpers/size_widget.dart';
 
 /// This VM import stub does nothing and only returns the child.
 class ImageRenderer extends StatefulWidget {
@@ -10,112 +12,59 @@ class ImageRenderer extends StatefulWidget {
   const ImageRenderer({
     Key? key,
     required this.child,
-    required this.link,
+    required this.src,
     required this.alt,
   }) : super(key: key);
 
-  ///Any Widget with image in it
+  /// Any Widget with image in it
   final Widget child;
 
-  ///Image source
-  final String link;
+  /// Image source
+  final String src;
 
-  ///Alternative to image
+  /// Alternative to image
   final String alt;
 
   @override
   _ImageRendererState createState() => _ImageRendererState();
 }
 
-class _ImageRendererState extends State<ImageRenderer>
-    with RouteAware, ScrollAware {
-  final DivElement div = DivElement();
-  final key = GlobalKey();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
-    subscribe(context);
-  }
-
-  @override
-  void dispose() {
-    clear();
-    routeObserver.unsubscribe(this);
-    unsubscribe();
-    super.dispose();
-  }
-
-  @override
-  void didPop() {
-    clear();
-    super.didPop();
-  }
-
-  @override
-  void didPush() {
-    addDivElement();
-    super.didPush();
-  }
-
-  @override
-  void didPopNext() {
-    addDivElement();
-    super.didPopNext();
-  }
-
-  @override
-  void didPushNext() {
-    clear();
-    super.didPushNext();
-  }
-
-  @override
-  void didScroll() {
-    refresh();
-  }
-
-  void refresh() {
-    div.style.position = 'absolute';
-    div.style.top = '${key.globalPaintBounds?.top ?? 0}px';
-    div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
-    var imageElement = new ImageElement()
-      ..src = widget.link
-      ..alt = widget.alt
-      ..width = (key.globalPaintBounds?.width ?? 100).toInt()
-      ..height = (key.globalPaintBounds?.height ?? 100).toInt();
-    div.children.removeWhere((element) => true);
-    div.append(imageElement);
-  }
+class _ImageRendererState extends State<ImageRenderer> {
+  Size? _size;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        key: key,
-        builder: (_, __) {
-          return NotificationListener(
-              onNotification: (SizeChangedLayoutNotification notification) {
-                WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                  refresh();
-                });
-                return true;
-              },
-              child: SizeChangedLayoutNotifier(child: widget.child));
-        });
-  }
+    if (!RobotDetector.detected(context)) {
+      return widget.child;
+    }
 
-  addDivElement() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
-        return;
-      }
-      refresh();
-      if (!document.body!.contains(div)) document.body?.append(div);
-    });
-  }
+    if (_size == null) {
+      return SizeWidget(
+        onSize: (size) {
+          if (size.isEmpty) return;
+          setState(() => _size = size);
+        },
+        child: widget.child,
+      );
+    }
 
-  void clear() {
-    div.remove();
+    final viewType = 'html-image-${widget.src}';
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+      viewType,
+      (int viewId) => ImageElement()
+        ..src = widget.src
+        ..alt = widget.alt
+        ..style.margin = '0px'
+        ..style.padding = '0px'
+        ..style.width = '${_size!.width}px'
+        ..style.height = '${_size!.height}px',
+    );
+
+    return SizedBox(
+      width: _size!.width,
+      height: _size!.height,
+      child: HtmlElementView(viewType: viewType),
+    );
   }
 }

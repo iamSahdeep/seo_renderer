@@ -1,20 +1,22 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/helpers/scroll_aware.dart';
-import 'package:seo_renderer/helpers/utils.dart';
+import 'package:seo_renderer/helpers/robot_detector_web.dart';
+import 'package:seo_renderer/helpers/size_widget.dart';
 
 /// A Widget to create the HtmlElement Tags from the TEXT widget.
 class TextRenderer extends StatefulWidget {
   /// Default [TextRenderer] const constructor.
   const TextRenderer({
     Key? key,
-    required this.text,
+    required this.child,
     this.element,
   }) : super(key: key);
 
   /// Provide with [Widget] widget to get data from it.
-  final Widget text;
+  final Widget child;
 
   /// HtmlElement freqently use for text:
   /// - Default: new ParagraphElement()
@@ -23,99 +25,51 @@ class TextRenderer extends StatefulWidget {
   final HtmlElement? element;
 
   @override
-  _TextRendererState createState() =>
-      _TextRendererState(element: element ?? new ParagraphElement());
+  _TextRendererState createState() => _TextRendererState();
 }
 
-class _TextRendererState extends State<TextRenderer>
-    with RouteAware, ScrollAware {
-  _TextRendererState({required this.element});
-
-  final HtmlElement element;
-  final key = GlobalKey();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
-    subscribe(context);
-  }
-
-  @override
-  void dispose() {
-    clear();
-    routeObserver.unsubscribe(this);
-    unsubscribe();
-    super.dispose();
-  }
-
-  @override
-  void didPop() {
-    clear();
-    super.didPop();
-  }
-
-  @override
-  void didPush() {
-    addElement();
-    super.didPush();
-  }
-
-  @override
-  void didPopNext() {
-    addElement();
-    super.didPopNext();
-  }
-
-  @override
-  void didPushNext() {
-    clear();
-    super.didPushNext();
-  }
-
-  @override
-  void didScroll() {
-    refresh();
-  }
-
-  void refresh() {
-    element.style.position = 'absolute';
-    element.style.fontSize = '14px';
-    element.style.top = '${key.globalPaintBounds?.top ?? 0}px';
-    element.style.left = '${key.globalPaintBounds?.left ?? 0}px';
-    element.style.width = '${key.globalPaintBounds?.width ?? 100}px';
-    element.style.margin = '0px';
-    element.style.padding = '0px';
-    element.text = _getTextFromWidget().toString();
-    element.style.color = '#ff0000';
-  }
+class _TextRendererState extends State<TextRenderer> {
+  Size? _size;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        key: key,
-        builder: (_, __) {
-          return widget.text;
-        });
-  }
+    if (!RobotDetector.detected(context)) {
+      return widget.child;
+    }
 
-  addElement() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
-        return;
-      }
-      refresh();
-      if (!document.body!.contains(element)) document.body?.append(element);
-    });
-  }
+    final text = _getTextFromWidget();
 
-  void clear() {
-    element.remove();
+    if (_size == null) {
+      return SizeWidget(
+        onSize: (size) => setState(() => _size = size),
+        child: widget.child,
+      );
+    }
+
+    final viewType = 'html-text-$text';
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+      viewType,
+      (_) => ParagraphElement()
+        ..text = text
+        ..style.fontSize = '14px'
+        ..style.color = '#ff0000'
+        ..style.margin = '0px'
+        ..style.padding = '0px'
+        ..style.width = '${_size!.width}px'
+        ..style.height = '${_size!.height}px',
+    );
+
+    return SizedBox(
+      width: _size!.width,
+      height: _size!.height,
+      child: HtmlElementView(viewType: viewType),
+    );
   }
 
   String? _getTextFromWidget() {
-    if (widget.text is Text) {
-      Text wid = (widget.text as Text);
+    if (widget.child is Text) {
+      Text wid = (widget.child as Text);
       String? data;
       data = wid.data;
       if (data != null) {
@@ -128,11 +82,11 @@ class _TextRendererState extends State<TextRenderer>
         return data;
       }
     }
-    if (widget.text is RichText) {
-      return (widget.text as RichText).text.toPlainText();
+    if (widget.child is RichText) {
+      return (widget.child as RichText).text.toPlainText();
     }
 
     throw FlutterError(
-        'Provided Widget is of Type ${widget.text.runtimeType}. Only supported widget is Text & RichText.');
+        'Provided Widget is of Type ${widget.child.runtimeType}. Only supported widget is Text & RichText.');
   }
 }

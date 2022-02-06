@@ -6,21 +6,19 @@ class ImageRenderer extends StatelessWidget {
   const ImageRenderer({
     Key? key,
     required this.child,
-    required this.link,
+    required this.src,
     required this.alt,
   }) : super(key: key);
 
-  ///Any Widget with image in it
+  /// Any Widget with image in it
   final Widget child;
 
-  ///Image source
-  final String link;
+  /// Image source
+  final String src;
 
-  ///Alternative to image
+  /// Alternative to image
   final String alt;
 
   @override
-  Widget build(BuildContext context) {
-    return child;
-  }
+  Widget build(BuildContext context) => child;
 }

@@ -8,22 +8,20 @@ class LinkRenderer extends StatelessWidget {
   const LinkRenderer({
     Key? key,
     required this.child,
-    required this.anchorText,
-    required this.link,
+    required this.text,
+    required this.href,
   }) : super(key: key);
 
   ///Any Widget with link in it
   final Widget child;
 
   ///Anchor Text just like html, will work like a replacement to
-  ///provided [child] with [link] to it.
-  final String anchorText;
+  ///provided [child] with [href] to it.
+  final String text;
 
   ///link to put in href
-  final String link;
+  final String href;
 
   @override
-  Widget build(BuildContext context) {
-    return child;
-  }
+  Widget build(BuildContext context) => child;
 }

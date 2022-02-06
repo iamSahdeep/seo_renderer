@@ -7,14 +7,12 @@ class TextRenderer extends StatelessWidget {
   /// Default [TextRenderer] const constructor.
   const TextRenderer({
     Key? key,
-    required this.text,
+    required this.child,
   }) : super(key: key);
 
   /// Provide with [Text] widget to get data from it.
-  final Widget text;
+  final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return text;
-  }
+  Widget build(BuildContext context) => child;
 }
