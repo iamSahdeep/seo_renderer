@@ -16,7 +16,7 @@ All PR's are welcome :)
 
   ```yaml
   dependencies:
-    seo_renderer: ^0.3.0
+    seo_renderer: ^0.4.0
   ```
 
 - Get the package from Pub:
