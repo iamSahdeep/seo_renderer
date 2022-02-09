@@ -1,3 +1,6 @@
+# 0.4.0
+* New ScrollAware widget to listen and update renderer widgets without RenderController. see PR #9
+
 # 0.3.0
 * Added Element type with paragraph as default. see PR #6
 
