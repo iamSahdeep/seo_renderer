@@ -47,7 +47,7 @@ There are 3 Widgets, `TextRenderer`, `LinkRenderer` & `ImageRenderer`
 ### TextRenderer
 
 **TextRenderer**
-Just pass the element `new ParagraphElement()`, `new HeadingElement()` or one of other HtmlElement and your `Text`/`RichText` Widget and an optional `RenderController()` which can be used to refresh the content(position) in case of Scrollable Content/ Changed Position .
+Just pass the element `new ParagraphElement()`, `new HeadingElement()` or one of other HtmlElement and your `Text`/`RichText` Widget.
 
 #### Paragraph
 
@@ -71,7 +71,7 @@ TextRenderer(
 
 ### LinkRenderer
 
-Need to pass `child : Widget`, `anchorText : String`, `link : String` & an optional `RenderConroller()`
+Need to pass `child : Widget`, `anchorText : String`, `link : String`
 
 Example :
 
@@ -90,7 +90,7 @@ LinkRenderer(
 
 ### ImageRenderer
 
-Need to pass `child : Widget`, `link : String`, `alt : String` & an optional `RenderConroller()`
+Need to pass `child : Widget`, `link : String`, `alt : String`
 
 Example :
 
@@ -105,10 +105,19 @@ ImageRenderer(
 ),
 ```
 
-RenderController have 2 methods
+### RendererScrollListener
 
-- `refresh()` : Useful in case Widget changes position and you want it too.
-- `clear()` : Sometimes on Push operation Html Elements can't be removed. Please use this in your Push Operation.
+In case any of your renderer widgets are inside scrollable widgets like `SingleChildScrollView`, `ListView` you should wrap it within `RendererScrollListener` just so renderer widgets can subscribe to scroll changes and reposition themselves if needed.
+
+Example :
+
+```dart
+RendererScrollListener(
+  child: ListView.builder(
+    ...
+  ),
+);
+```
 
 ## ScreenShot & Example
 

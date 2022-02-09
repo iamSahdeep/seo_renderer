@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/helpers/utils.dart';
 
 /// A Widget to create the HTML Tags but with Link (href) from any [Widget].
 ///
@@ -8,7 +7,6 @@ class LinkRenderer extends StatelessWidget {
   /// Default [LinkRenderer] const constructor.
   const LinkRenderer({
     Key? key,
-    this.controller,
     required this.child,
     required this.anchorText,
     required this.link,
@@ -23,9 +21,6 @@ class LinkRenderer extends StatelessWidget {
 
   ///link to put in href
   final String link;
-
-  ///Optional : [RenderController] object if you want to perform certain actions.
-  final RenderController? controller;
 
   @override
   Widget build(BuildContext context) {
