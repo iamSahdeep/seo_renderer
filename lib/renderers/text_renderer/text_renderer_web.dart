@@ -31,6 +31,14 @@ class TextRenderer extends StatefulWidget {
 class _TextRendererState extends State<TextRenderer> {
   Size? _size;
 
+  void _onSize(Size size) {
+    if (_size == size) return;
+    _size = size;
+
+    if (!mounted) return;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!RobotDetector.detected(context)) {
@@ -38,14 +46,6 @@ class _TextRendererState extends State<TextRenderer> {
     }
 
     final text = _getTextFromWidget();
-
-    if (_size == null) {
-      return SizeWidget(
-        onSize: (size) => setState(() => _size = size),
-        child: widget.child,
-      );
-    }
-
     final viewType = 'html-text-$text';
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
@@ -56,17 +56,23 @@ class _TextRendererState extends State<TextRenderer> {
         ..style.color = '#ff0000'
         ..style.margin = '0px'
         ..style.padding = '0px'
-        ..style.width = '${_size!.width}px'
-        ..style.height = '${_size!.height}px',
+        ..style.width = '${_size?.width ?? 0}px'
+        ..style.height = '${_size?.height ?? 0}px',
     );
 
     return SizedBox(
-      width: _size!.width,
-      height: _size!.height,
+      width: _size?.width,
+      height: _size?.height,
       child: Stack(
         children: [
-          Positioned.fill(child: widget.child),
-          Positioned.fill(child: HtmlElementView(viewType: viewType)),
+          SizeWidget(
+            onSize: _onSize,
+            child: widget.child,
+          ),
+          if (_size != null)
+            AbsorbPointer(
+              child: HtmlElementView(viewType: viewType),
+            ),
         ],
       ),
     );

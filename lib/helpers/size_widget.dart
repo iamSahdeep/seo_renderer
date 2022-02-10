@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 
 class SizeWidget extends SingleChildRenderObjectWidget {
   final Function(Size) onSize;
@@ -18,7 +19,6 @@ class SizeWidget extends SingleChildRenderObjectWidget {
 
 class _SizeWidgetRenderObject extends RenderProxyBox {
   final Function(Size) onSize;
-  Size? oldSize;
 
   _SizeWidgetRenderObject(this.onSize);
 
@@ -26,9 +26,14 @@ class _SizeWidgetRenderObject extends RenderProxyBox {
   void performLayout() {
     super.performLayout();
 
-    final newSize = child?.size;
-    if (newSize == null || newSize == oldSize) return;
+    final size = child?.size;
+    if (size == null) return;
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) => onSize(newSize));
+    if (SchedulerBinding.instance?.schedulerPhase !=
+        SchedulerPhase.persistentCallbacks) {
+      onSize(size);
+    } else {
+      SchedulerBinding.instance?.addPostFrameCallback((_) => onSize(size));
+    }
   }
 }
