@@ -3,7 +3,7 @@
 <a href="https://pub.dev/packages/seo_renderer"> <img height="20" alt="Pub" src="https://img.shields.io/pub/v/seo_renderer.svg?style=for-the-badge">
 </a>
 
-A flutter plugin (_under development_) to render text widgets as html elements for SEO purpose.
+A flutter plugin (_under development_) to render text, link, image widgets as html elements for SEO purpose.
 
 Created specifically for issue <https://github.com/flutter/flutter/issues/46789>
 It will automatic detect the crawler using regex and navigator userAgent and add the `HtmlElement` you choose to the DOM.
@@ -33,90 +33,64 @@ All PR's are welcome :)
 
 ## Usage
 
-First we need to add a `RouteObserver` to automatically remove Html Elements when popped from the Navigation Stack.
-To do this simply add this line in `MaterialApp`
+First we need to add a `RobotDetector` to detect if page is visited by a robot. To do this simply wrap `MaterialApp` like this:
 
 ```dart
-navigatorObservers: <RouteObserver<ModalRoute<void>>>[ routeObserver ],
+runApp(
+  RobotDetector(
+    debug: true, // you can set true to enable robot mode
+    child: MaterialApp(
+      home: MyApp(),
+    ),
+  ),
+);
 ```
-
-ps : routeObserver is an object, which can be found in utils.dart file.
-
-There are 3 Widgets, `TextRenderer`, `LinkRenderer` & `ImageRenderer`
 
 ### TextRenderer
 
-**TextRenderer**
-Just pass the element `new ParagraphElement()`, `new HeadingElement()` or one of other HtmlElement and your `Text`/`RichText` Widget.
-
-#### Paragraph
+To render html text element above a child just pass `text` and optional `style` element.
 
 ```dart
 TextRenderer(
-  element: new ParagraphElement(), // This is ParagraphElement by default
-  text: Text(
-      'Paragraph: Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
-),
-```
+  text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+  child: ...,
+)
 
-#### Heading
-
-```dart
 TextRenderer(
-  element: new HeadingElement.h1(),
-  text: Text(
-      'Heading H1: Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
-),
+  text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+  style: TextRendererStyle.header1,
+  child: ...,
+)
+
+TextRenderer(
+  text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+  style: TextRendererStyle.paragraph,
+  child: ...,
+)
 ```
 
 ### LinkRenderer
 
-Need to pass `child : Widget`, `anchorText : String`, `link : String`
-
-Example :
+To render html link element above a child just pass `text` and `href`.
 
 ```dart
 LinkRenderer(
-  anchorText: 'Try Flutter',
-  link: 'https://www.flutter.dev',
-  child: OutlinedButton(
-    onPressed: () {
-      launch('https://www.flutter.dev');
-    },
-    child: Text('Flutter.dev'),
-  ),
-),
+  text: 'Try Flutter',
+  href: 'https://www.flutter.dev',
+  child: ...,
+)
 ```
 
 ### ImageRenderer
 
-Need to pass `child : Widget`, `link : String`, `alt : String`
-
-Example :
+To render html image element above a child just pass `alt` and `src`.
 
 ```dart
 ImageRenderer(
-  alt: 'Flutter logo',
-  link:
-      'https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png',
-  child: Image.network(
-      "https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png"
-  ),
-),
-```
-
-### RendererScrollListener
-
-In case any of your renderer widgets are inside scrollable widgets like `SingleChildScrollView`, `ListView` you should wrap it within `RendererScrollListener` just so renderer widgets can subscribe to scroll changes and reposition themselves if needed.
-
-Example :
-
-```dart
-RendererScrollListener(
-  child: ListView.builder(
-    ...
-  ),
-);
+  alt: 'Fake Image',
+  src: 'https://fakeimg.pl/300x300/?text=Image',
+  child: ...,
+)
 ```
 
 ## ScreenShot & Example
