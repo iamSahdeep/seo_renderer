@@ -25,29 +25,45 @@ class MyApp extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => SingleTextItem()));
-                },
-                child: TextRenderer(child: Text('Single Text Item'))),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => SingleTextItem()));
+              },
+              child: TextRenderer(
+                text: 'Single Text Item',
+                child: Text('Single Text Item'),
+              ),
+            ),
             OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => ScrollableContent()));
-                },
-                child: TextRenderer(child: Text('Scrollable Text Content'))),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => ScrollableContent()));
+              },
+              child: TextRenderer(
+                text: 'Scrollable Text Content',
+                child: Text('Scrollable Text Content'),
+              ),
+            ),
             OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => SingleTextLinkExample()));
-                },
-                child: TextRenderer(child: Text('Single Link Text Item'))),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => SingleTextLinkExample()));
+              },
+              child: TextRenderer(
+                text: 'Single Link Text Item',
+                child: Text('Single Link Text Item'),
+              ),
+            ),
             OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => ImageRendererExample()));
-                },
-                child: TextRenderer(child: Text('Image renderer'))),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => ImageRendererExample()));
+              },
+              child: TextRenderer(
+                text: 'Image renderer',
+                child: Text('Image renderer'),
+              ),
+            ),
           ],
         ),
       ),

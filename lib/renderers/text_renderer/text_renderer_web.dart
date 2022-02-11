@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/helpers/robot_detector_web.dart';
 import 'package:seo_renderer/helpers/size_widget.dart';
+import 'package:seo_renderer/renderers/text_renderer/text_renderer_style.dart';
 
 /// A Widget to create the HtmlElement Tags from the TEXT widget.
 class TextRenderer extends StatefulWidget {
@@ -12,17 +13,17 @@ class TextRenderer extends StatefulWidget {
   const TextRenderer({
     Key? key,
     required this.child,
-    this.element,
+    required this.text,
+    this.style,
   }) : super(key: key);
 
-  /// Provide with [Widget] widget to get data from it.
+  ///Any Widget with text in it
   final Widget child;
 
-  /// HtmlElement freqently use for text:
-  /// - Default: new ParagraphElement()
-  /// - new ParagraphElement()
-  /// - new HeadingElement.h1() tp h6()
-  final HtmlElement? element;
+  ///Text that the child contains
+  final String text;
+
+  final TextRendererStyle? style;
 
   @override
   _TextRendererState createState() => _TextRendererState();
@@ -39,19 +40,38 @@ class _TextRendererState extends State<TextRenderer> {
     setState(() {});
   }
 
+  HtmlElement _htmlElement() {
+    switch (widget.style) {
+      case TextRendererStyle.header1:
+        return HeadingElement.h1();
+      case TextRendererStyle.header2:
+        return HeadingElement.h2();
+      case TextRendererStyle.header3:
+        return HeadingElement.h3();
+      case TextRendererStyle.header4:
+        return HeadingElement.h4();
+      case TextRendererStyle.header5:
+        return HeadingElement.h5();
+      case TextRendererStyle.header6:
+        return HeadingElement.h6();
+      case TextRendererStyle.paragraph:
+      default:
+        return ParagraphElement();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!RobotDetector.detected(context)) {
       return widget.child;
     }
 
-    final text = _getTextFromWidget();
-    final viewType = 'html-text-$text';
+    final viewType = 'html-text-${widget.text}';
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
       viewType,
-      (_) => ParagraphElement()
-        ..text = text
+      (_) => _htmlElement()
+        ..text = widget.text
         ..style.fontSize = '14px'
         ..style.color = '#ff0000'
         ..style.margin = '0px'
@@ -76,28 +96,5 @@ class _TextRendererState extends State<TextRenderer> {
         ],
       ),
     );
-  }
-
-  String? _getTextFromWidget() {
-    if (widget.child is Text) {
-      Text wid = (widget.child as Text);
-      String? data;
-      data = wid.data;
-      if (data != null) {
-        return data;
-      }
-      if (wid.textSpan != null) {
-        data = wid.textSpan!.toPlainText();
-      }
-      if (data != null) {
-        return data;
-      }
-    }
-    if (widget.child is RichText) {
-      return (widget.child as RichText).text.toPlainText();
-    }
-
-    throw FlutterError(
-        'Provided Widget is of Type ${widget.child.runtimeType}. Only supported widget is Text & RichText.');
   }
 }
