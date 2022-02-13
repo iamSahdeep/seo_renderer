@@ -13,7 +13,7 @@ class TextRenderer extends StatefulWidget {
   const TextRenderer({
     Key? key,
     required this.child,
-    required this.text,
+    this.text,
     this.style,
   }) : super(key: key);
 
@@ -21,7 +21,7 @@ class TextRenderer extends StatefulWidget {
   final Widget child;
 
   ///Text that the child contains
-  final String text;
+  final String? text;
 
   final TextRendererStyle? style;
 
@@ -40,7 +40,7 @@ class _TextRendererState extends State<TextRenderer> {
     setState(() {});
   }
 
-  HtmlElement _htmlElement() {
+  HtmlElement get _htmlElement {
     switch (widget.style) {
       case TextRendererStyle.header1:
         return HeadingElement.h1();
@@ -60,18 +60,46 @@ class _TextRendererState extends State<TextRenderer> {
     }
   }
 
+  String get _text {
+    final text = widget.text;
+    if (text != null) {
+      return text;
+    }
+
+    final child = widget.child;
+    if (child is Text) {
+      final text = child.data ?? child.textSpan?.toPlainText();
+
+      if (text == null) {
+        throw FlutterError(
+          'TextRenderer child is ${widget.child.runtimeType} and data, textSpan are null',
+        );
+      }
+
+      return text;
+    }
+
+    if (child is RichText) {
+      return child.text.toPlainText();
+    }
+
+    throw FlutterError(
+      'TextRenderer child is ${widget.child.runtimeType} and text is null',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!RobotDetector.detected(context)) {
       return widget.child;
     }
 
-    final viewType = 'html-text-${widget.text}';
+    final viewType = 'html-text-$_text';
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
       viewType,
-      (_) => _htmlElement()
-        ..text = widget.text
+      (_) => _htmlElement
+        ..text = _text
         ..style.fontSize = '14px'
         ..style.color = '#ff0000'
         ..style.margin = '0px'

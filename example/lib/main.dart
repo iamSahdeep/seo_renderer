@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
                     .push(MaterialPageRoute(builder: (_) => SingleTextItem()));
               },
               child: TextRenderer(
-                text: 'Single Text Item',
                 child: Text('Single Text Item'),
               ),
             ),
@@ -40,7 +39,6 @@ class MyApp extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => ScrollableContent()));
               },
               child: TextRenderer(
-                text: 'Scrollable Text Content',
                 child: Text('Scrollable Text Content'),
               ),
             ),
@@ -50,7 +48,6 @@ class MyApp extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => SingleTextLinkExample()));
               },
               child: TextRenderer(
-                text: 'Single Link Text Item',
                 child: Text('Single Link Text Item'),
               ),
             ),
@@ -60,7 +57,6 @@ class MyApp extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => ImageRendererExample()));
               },
               child: TextRenderer(
-                text: 'Image renderer',
                 child: Text('Image renderer'),
               ),
             ),

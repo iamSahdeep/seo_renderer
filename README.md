@@ -48,24 +48,36 @@ runApp(
 
 ### TextRenderer
 
-To render html text element above a child just pass `text` and optional `style` element.
+To render html text element above a child you can pass `Text`, `RichText` as the child or simply set the `text`.
 
 ```dart
 TextRenderer(
-  text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  child: ...,
+  child: Text(
+    'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+  ),
 )
 
 TextRenderer(
   text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  style: TextRendererStyle.header1,
-  child: ...,
+  child: Container(),
 )
+```
 
+Optionally you can change the html element between `<h1>` to `<h6>` and `<p>` by setting `style`. Default value is `TextRendererStyle.paragraph`.
+
+```dart
 TextRenderer(
-  text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
   style: TextRendererStyle.paragraph,
-  child: ...,
+  child: Text(
+    'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+  ),
+)
+
+TextRenderer(
+  style: TextRendererStyle.header1,
+  child: Text(
+    'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+  ),
 )
 ```
 

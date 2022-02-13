@@ -9,7 +9,7 @@ class TextRenderer extends StatelessWidget {
   const TextRenderer({
     Key? key,
     required this.child,
-    required this.text,
+    this.text,
     this.style,
   }) : super(key: key);
 
@@ -17,7 +17,7 @@ class TextRenderer extends StatelessWidget {
   final Widget child;
 
   ///Text that the child contains
-  final String text;
+  final String? text;
 
   final TextRendererStyle? style;
 
