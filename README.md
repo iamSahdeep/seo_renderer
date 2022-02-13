@@ -48,7 +48,7 @@ runApp(
 
 ### TextRenderer
 
-To render html text element above a child you can pass `Text`, `RichText` as the child or simply set the `text`.
+To render html text element above a child you pass `Text`, `RichText` as the child or simply set the `text`.
 
 ```dart
 TextRenderer(
@@ -59,7 +59,7 @@ TextRenderer(
 
 TextRenderer(
   text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  child: Container(),
+  child: CustomWidget(),
 )
 ```
 
@@ -83,7 +83,7 @@ TextRenderer(
 
 ### LinkRenderer
 
-To render html link element above a child just pass `text` and `href`.
+To render html link element above a child set `text` and `href`.
 
 ```dart
 LinkRenderer(
@@ -95,13 +95,18 @@ LinkRenderer(
 
 ### ImageRenderer
 
-To render html image element above a child just pass `alt` and `src`.
+To render html image element above a child set `alt` and pass `Image.network(...)`, `Image.asset(...)`, `Image.memory(...)` as the child or simply set the `src`.
 
 ```dart
 ImageRenderer(
-  alt: 'Fake Image',
-  src: 'https://fakeimg.pl/300x300/?text=Image',
-  child: ...,
+  alt: 'Network Image',
+  child: Image.network('https://fakeimg.pl/300x300/?text=Network'),
+)
+
+ImageRenderer(
+  alt: 'Network Image',
+  src: 'https://fakeimg.pl/300x300/?text=Network',
+  child: CustomWidget(),
 )
 ```
 

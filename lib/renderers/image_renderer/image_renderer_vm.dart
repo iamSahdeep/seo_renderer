@@ -6,7 +6,7 @@ class ImageRenderer extends StatelessWidget {
   const ImageRenderer({
     Key? key,
     required this.child,
-    required this.src,
+    this.src,
     required this.alt,
   }) : super(key: key);
 
@@ -14,7 +14,7 @@ class ImageRenderer extends StatelessWidget {
   final Widget child;
 
   /// Image source
-  final String src;
+  final String? src;
 
   /// Alternative to image
   final String alt;

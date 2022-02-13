@@ -52,8 +52,7 @@ class ImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ImageRenderer(
       alt: 'Fake Image',
-      src: 'https://fakeimg.pl/300x300/?text=Image',
-      child: Image.network("https://fakeimg.pl/300x300/?text=Image"),
+      child: Image.network('https://fakeimg.pl/300x300/?text=Image'),
     );
   }
 }

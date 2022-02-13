@@ -1,4 +1,5 @@
 // ignore: avoid_web_libraries_in_flutter
+import 'dart:convert';
 import 'dart:html';
 import 'dart:ui' as ui;
 
@@ -12,7 +13,7 @@ class ImageRenderer extends StatefulWidget {
   const ImageRenderer({
     Key? key,
     required this.child,
-    required this.src,
+    this.src,
     required this.alt,
   }) : super(key: key);
 
@@ -20,7 +21,7 @@ class ImageRenderer extends StatefulWidget {
   final Widget child;
 
   /// Image source
-  final String src;
+  final String? src;
 
   /// Alternative to image
   final String alt;
@@ -41,17 +42,49 @@ class _ImageRendererState extends State<ImageRenderer> {
     setState(() {});
   }
 
+  String get _src {
+    final src = widget.src;
+    if (src != null) {
+      return src;
+    }
+
+    final child = widget.child;
+    if (child is Image) {
+      final image = (child.image is ResizeImage)
+          ? (child.image as ResizeImage).imageProvider
+          : child.image;
+
+      if (image is NetworkImage) {
+        return image.url;
+      } else if (image is AssetImage) {
+        return image.assetName;
+      } else if (image is ExactAssetImage) {
+        return image.assetName;
+      } else if (image is MemoryImage) {
+        return 'data:image/png;base64,${base64Encode(image.bytes)}';
+      }
+
+      throw FlutterError(
+        'ImageRenderer child is ${widget.child.runtimeType}, image is ${image.runtimeType} not supported',
+      );
+    }
+
+    throw FlutterError(
+      'ImageRenderer child is ${widget.child.runtimeType} and src is null',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!RobotDetector.detected(context)) {
       return widget.child;
     }
 
-    final viewType = 'html-image-${widget.src}';
+    final viewType = 'html-image-$_src';
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
       viewType,
-      (int viewId) => ImageElement(src: widget.src)
+      (int viewId) => ImageElement(src: _src)
         ..alt = widget.alt
         ..style.margin = '0px'
         ..style.padding = '0px'
