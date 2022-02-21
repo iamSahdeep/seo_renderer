@@ -33,7 +33,7 @@ All PR's are welcome :)
 
 ## Usage
 
-First we need to add a `RobotDetector` to detect if page is visited by a robot. To do this simply wrap `MaterialApp` like this:
+It's required to add a `RobotDetector` to detect if page is visited by a robot and add `seoRouteObserver` to observe when widgets change their visibility. To do this simply wrap `MaterialApp` within `RobotDetector` and add `seoRouteObserver` in navigatorObservers:
 
 ```dart
 runApp(
@@ -41,6 +41,7 @@ runApp(
     debug: true, // you can set true to enable robot mode
     child: MaterialApp(
       home: MyApp(),
+      navigatorObservers: [seoRouteObserver],
     ),
   ),
 );

@@ -10,6 +10,7 @@ void main() {
     RobotDetector(
       child: MaterialApp(
         home: MyApp(),
+        navigatorObservers: [seoRouteObserver],
       ),
     ),
   );

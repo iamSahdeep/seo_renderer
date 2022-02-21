@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/helpers/robot_detector_web.dart';
+import 'package:seo_renderer/helpers/route_aware_state.dart';
 import 'package:seo_renderer/helpers/size_widget.dart';
 
 /// A Widget to create the HTML Tags but with Link (href) from any [Widget].
@@ -29,7 +30,7 @@ class LinkRenderer extends StatefulWidget {
   _LinkRendererState createState() => _LinkRendererState();
 }
 
-class _LinkRendererState extends State<LinkRenderer> {
+class _LinkRendererState extends RouteAwareState<LinkRenderer> {
   Size? _size;
 
   void _onSize(Size size) {
@@ -69,8 +70,8 @@ class _LinkRendererState extends State<LinkRenderer> {
             onSize: _onSize,
             child: widget.child,
           ),
-          if (_size != null)
-            AbsorbPointer(
+          if (_size != null && visible)
+            IgnorePointer(
               child: HtmlElementView(viewType: viewType),
             ),
         ],

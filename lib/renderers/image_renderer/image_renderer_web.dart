@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:seo_renderer/helpers/robot_detector_web.dart';
+import 'package:seo_renderer/helpers/route_aware_state.dart';
 import 'package:seo_renderer/helpers/size_widget.dart';
 
 /// This VM import stub does nothing and only returns the child.
@@ -30,7 +31,7 @@ class ImageRenderer extends StatefulWidget {
   _ImageRendererState createState() => _ImageRendererState();
 }
 
-class _ImageRendererState extends State<ImageRenderer> {
+class _ImageRendererState extends RouteAwareState<ImageRenderer> {
   Size? _size;
 
   void _onSize(Size size) {
@@ -101,8 +102,8 @@ class _ImageRendererState extends State<ImageRenderer> {
             onSize: _onSize,
             child: widget.child,
           ),
-          if (_size != null)
-            AbsorbPointer(
+          if (_size != null && visible)
+            IgnorePointer(
               child: HtmlElementView(viewType: viewType),
             ),
         ],
