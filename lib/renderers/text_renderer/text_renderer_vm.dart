@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seo_renderer/renderers/text_renderer/text_renderer_style.dart';
 
 /// A Widget to create the HTML Tags from the TEXT widget.
 ///
@@ -7,14 +8,19 @@ class TextRenderer extends StatelessWidget {
   /// Default [TextRenderer] const constructor.
   const TextRenderer({
     Key? key,
-    required this.text,
+    required this.child,
+    this.text,
+    this.style,
   }) : super(key: key);
 
-  /// Provide with [Text] widget to get data from it.
-  final Widget text;
+  ///Any Widget with text in it
+  final Widget child;
+
+  ///Text that the child contains
+  final String? text;
+
+  final TextRendererStyle? style;
 
   @override
-  Widget build(BuildContext context) {
-    return text;
-  }
+  Widget build(BuildContext context) => child;
 }

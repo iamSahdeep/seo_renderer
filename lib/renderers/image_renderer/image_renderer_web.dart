@@ -1,8 +1,12 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:convert';
 import 'dart:html';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/helpers/scroll_aware.dart';
-import 'package:seo_renderer/helpers/utils.dart';
+import 'package:seo_renderer/helpers/robot_detector_web.dart';
+import 'package:seo_renderer/helpers/route_aware_state.dart';
+import 'package:seo_renderer/helpers/size_widget.dart';
 
 /// This VM import stub does nothing and only returns the child.
 class ImageRenderer extends StatefulWidget {
@@ -10,112 +14,100 @@ class ImageRenderer extends StatefulWidget {
   const ImageRenderer({
     Key? key,
     required this.child,
-    required this.link,
+    this.src,
     required this.alt,
   }) : super(key: key);
 
-  ///Any Widget with image in it
+  /// Any Widget with image in it
   final Widget child;
 
-  ///Image source
-  final String link;
+  /// Image source
+  final String? src;
 
-  ///Alternative to image
+  /// Alternative to image
   final String alt;
 
   @override
   _ImageRendererState createState() => _ImageRendererState();
 }
 
-class _ImageRendererState extends State<ImageRenderer>
-    with RouteAware, ScrollAware {
-  final DivElement div = DivElement();
-  final key = GlobalKey();
+class _ImageRendererState extends RouteAwareState<ImageRenderer> {
+  Size? _size;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
-    subscribe(context);
+  void _onSize(Size size) {
+    if (_size == size) return;
+    if (size.isEmpty) return;
+    _size = size;
+
+    if (!mounted) return;
+    setState(() {});
   }
 
-  @override
-  void dispose() {
-    clear();
-    routeObserver.unsubscribe(this);
-    unsubscribe();
-    super.dispose();
-  }
+  String get _src {
+    final src = widget.src;
+    if (src != null) {
+      return src;
+    }
 
-  @override
-  void didPop() {
-    clear();
-    super.didPop();
-  }
+    final child = widget.child;
+    if (child is Image) {
+      final image = (child.image is ResizeImage)
+          ? (child.image as ResizeImage).imageProvider
+          : child.image;
 
-  @override
-  void didPush() {
-    addDivElement();
-    super.didPush();
-  }
+      if (image is NetworkImage) {
+        return image.url;
+      } else if (image is AssetImage) {
+        return image.assetName;
+      } else if (image is ExactAssetImage) {
+        return image.assetName;
+      } else if (image is MemoryImage) {
+        return 'data:image/png;base64,${base64Encode(image.bytes)}';
+      }
 
-  @override
-  void didPopNext() {
-    addDivElement();
-    super.didPopNext();
-  }
+      throw FlutterError(
+        'ImageRenderer child is ${widget.child.runtimeType}, image is ${image.runtimeType} not supported',
+      );
+    }
 
-  @override
-  void didPushNext() {
-    clear();
-    super.didPushNext();
-  }
-
-  @override
-  void didScroll() {
-    refresh();
-  }
-
-  void refresh() {
-    div.style.position = 'absolute';
-    div.style.top = '${key.globalPaintBounds?.top ?? 0}px';
-    div.style.left = '${key.globalPaintBounds?.left ?? 0}px';
-    var imageElement = new ImageElement()
-      ..src = widget.link
-      ..alt = widget.alt
-      ..width = (key.globalPaintBounds?.width ?? 100).toInt()
-      ..height = (key.globalPaintBounds?.height ?? 100).toInt();
-    div.children.removeWhere((element) => true);
-    div.append(imageElement);
+    throw FlutterError(
+      'ImageRenderer child is ${widget.child.runtimeType} and src is null',
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        key: key,
-        builder: (_, __) {
-          return NotificationListener(
-              onNotification: (SizeChangedLayoutNotification notification) {
-                WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                  refresh();
-                });
-                return true;
-              },
-              child: SizeChangedLayoutNotifier(child: widget.child));
-        });
-  }
+    if (!RobotDetector.detected(context)) {
+      return widget.child;
+    }
 
-  addDivElement() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
-        return;
-      }
-      refresh();
-      if (!document.body!.contains(div)) document.body?.append(div);
-    });
-  }
+    final viewType = 'html-image-$_src';
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+      viewType,
+      (int viewId) => ImageElement(src: _src)
+        ..alt = widget.alt
+        ..style.margin = '0px'
+        ..style.padding = '0px'
+        ..style.width = '${_size?.width ?? 0}px'
+        ..style.height = '${_size?.height ?? 0}px',
+    );
 
-  void clear() {
-    div.remove();
+    return SizedBox(
+      width: _size?.width,
+      height: _size?.height,
+      child: Stack(
+        children: [
+          SizeWidget(
+            onSize: _onSize,
+            child: widget.child,
+          ),
+          if (_size != null && visible)
+            IgnorePointer(
+              child: HtmlElementView(viewType: viewType),
+            ),
+        ],
+      ),
+    );
   }
 }

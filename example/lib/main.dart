@@ -6,10 +6,14 @@ import 'package:seo_renderer_example/examples/scrollable_content.dart';
 import 'package:seo_renderer_example/examples/single_text_item.dart';
 
 void main() {
-  runApp(MaterialApp(
-    navigatorObservers: [routeObserver],
-    home: MyApp(),
-  ));
+  runApp(
+    RobotDetector(
+      child: MaterialApp(
+        home: MyApp(),
+        navigatorObservers: [seoRouteObserver],
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,29 +26,41 @@ class MyApp extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => SingleTextItem()));
-                },
-                child: TextRenderer(text: Text('Single Text Item'))),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => SingleTextItem()));
+              },
+              child: TextRenderer(
+                child: Text('Single Text Item'),
+              ),
+            ),
             OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => ScrollableContent()));
-                },
-                child: TextRenderer(text: Text('Scrollable Text Content'))),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => ScrollableContent()));
+              },
+              child: TextRenderer(
+                child: Text('Scrollable Text Content'),
+              ),
+            ),
             OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => SingleTextLinkExample()));
-                },
-                child: TextRenderer(text: Text('Single Link Text Item'))),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => SingleTextLinkExample()));
+              },
+              child: TextRenderer(
+                child: Text('Single Link Text Item'),
+              ),
+            ),
             OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => ImageRendererExample()));
-                },
-                child: TextRenderer(text: Text('Image renderer'))),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => ImageRendererExample()));
+              },
+              child: TextRenderer(
+                child: Text('Image renderer'),
+              ),
+            ),
           ],
         ),
       ),

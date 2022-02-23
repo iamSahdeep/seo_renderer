@@ -1,138 +1,129 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/helpers/scroll_aware.dart';
-import 'package:seo_renderer/helpers/utils.dart';
+import 'package:seo_renderer/helpers/route_aware_state.dart';
+import 'package:seo_renderer/helpers/robot_detector_web.dart';
+import 'package:seo_renderer/helpers/size_widget.dart';
+import 'package:seo_renderer/renderers/text_renderer/text_renderer_style.dart';
 
 /// A Widget to create the HtmlElement Tags from the TEXT widget.
 class TextRenderer extends StatefulWidget {
   /// Default [TextRenderer] const constructor.
   const TextRenderer({
     Key? key,
-    required this.text,
-    this.element,
+    required this.child,
+    this.text,
+    this.style,
   }) : super(key: key);
 
-  /// Provide with [Widget] widget to get data from it.
-  final Widget text;
+  ///Any Widget with text in it
+  final Widget child;
 
-  /// HtmlElement freqently use for text:
-  /// - Default: new ParagraphElement()
-  /// - new ParagraphElement()
-  /// - new HeadingElement.h1() tp h6()
-  final HtmlElement? element;
+  ///Text that the child contains
+  final String? text;
+
+  final TextRendererStyle? style;
 
   @override
-  _TextRendererState createState() =>
-      _TextRendererState(element: element ?? new ParagraphElement());
+  _TextRendererState createState() => _TextRendererState();
 }
 
-class _TextRendererState extends State<TextRenderer>
-    with RouteAware, ScrollAware {
-  _TextRendererState({required this.element});
+class _TextRendererState extends RouteAwareState<TextRenderer> {
+  Size? _size;
 
-  final HtmlElement element;
-  final key = GlobalKey();
+  void _onSize(Size size) {
+    if (_size == size) return;
+    _size = size;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
-    subscribe(context);
+    if (!mounted) return;
+    setState(() {});
   }
 
-  @override
-  void dispose() {
-    clear();
-    routeObserver.unsubscribe(this);
-    unsubscribe();
-    super.dispose();
+  HtmlElement get _htmlElement {
+    switch (widget.style) {
+      case TextRendererStyle.header1:
+        return HeadingElement.h1();
+      case TextRendererStyle.header2:
+        return HeadingElement.h2();
+      case TextRendererStyle.header3:
+        return HeadingElement.h3();
+      case TextRendererStyle.header4:
+        return HeadingElement.h4();
+      case TextRendererStyle.header5:
+        return HeadingElement.h5();
+      case TextRendererStyle.header6:
+        return HeadingElement.h6();
+      case TextRendererStyle.paragraph:
+      default:
+        return ParagraphElement();
+    }
   }
 
-  @override
-  void didPop() {
-    clear();
-    super.didPop();
-  }
+  String get _text {
+    final text = widget.text;
+    if (text != null) {
+      return text;
+    }
 
-  @override
-  void didPush() {
-    addElement();
-    super.didPush();
-  }
+    final child = widget.child;
+    if (child is Text) {
+      final text = child.data ?? child.textSpan?.toPlainText();
 
-  @override
-  void didPopNext() {
-    addElement();
-    super.didPopNext();
-  }
+      if (text == null) {
+        throw FlutterError(
+          'TextRenderer child is ${widget.child.runtimeType} and data, textSpan are null',
+        );
+      }
 
-  @override
-  void didPushNext() {
-    clear();
-    super.didPushNext();
-  }
+      return text;
+    }
 
-  @override
-  void didScroll() {
-    refresh();
-  }
+    if (child is RichText) {
+      return child.text.toPlainText();
+    }
 
-  void refresh() {
-    element.style.position = 'absolute';
-    element.style.fontSize = '14px';
-    element.style.top = '${key.globalPaintBounds?.top ?? 0}px';
-    element.style.left = '${key.globalPaintBounds?.left ?? 0}px';
-    element.style.width = '${key.globalPaintBounds?.width ?? 100}px';
-    element.style.margin = '0px';
-    element.style.padding = '0px';
-    element.text = _getTextFromWidget().toString();
-    element.style.color = '#ff0000';
+    throw FlutterError(
+      'TextRenderer child is ${widget.child.runtimeType} and text is null',
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        key: key,
-        builder: (_, __) {
-          return widget.text;
-        });
-  }
-
-  addElement() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (!regExpBots.hasMatch(window.navigator.userAgent.toString())) {
-        return;
-      }
-      refresh();
-      if (!document.body!.contains(element)) document.body?.append(element);
-    });
-  }
-
-  void clear() {
-    element.remove();
-  }
-
-  String? _getTextFromWidget() {
-    if (widget.text is Text) {
-      Text wid = (widget.text as Text);
-      String? data;
-      data = wid.data;
-      if (data != null) {
-        return data;
-      }
-      if (wid.textSpan != null) {
-        data = wid.textSpan!.toPlainText();
-      }
-      if (data != null) {
-        return data;
-      }
-    }
-    if (widget.text is RichText) {
-      return (widget.text as RichText).text.toPlainText();
+    if (!RobotDetector.detected(context)) {
+      return widget.child;
     }
 
-    throw FlutterError(
-        'Provided Widget is of Type ${widget.text.runtimeType}. Only supported widget is Text & RichText.');
+    final viewType = 'html-text-$_text';
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+      viewType,
+      (_) => _htmlElement
+        ..text = _text
+        ..style.fontSize = '14px'
+        ..style.color = '#ff0000'
+        ..style.margin = '0px'
+        ..style.padding = '0px'
+        ..style.width = '${_size?.width ?? 0}px'
+        ..style.height = '${_size?.height ?? 0}px',
+    );
+
+    return SizedBox(
+      width: _size?.width,
+      height: _size?.height,
+      child: Stack(
+        children: [
+          SizeWidget(
+            onSize: _onSize,
+            child: widget.child,
+          ),
+          if (_size != null && visible)
+            IgnorePointer(
+              child: HtmlElementView(viewType: viewType),
+            ),
+        ],
+      ),
+    );
   }
 }
