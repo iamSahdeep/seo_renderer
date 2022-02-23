@@ -3,8 +3,8 @@ import 'dart:html';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:seo_renderer/helpers/route_aware_state.dart';
 import 'package:seo_renderer/helpers/robot_detector_web.dart';
+import 'package:seo_renderer/helpers/route_aware_state.dart';
 import 'package:seo_renderer/helpers/size_widget.dart';
 import 'package:seo_renderer/renderers/text_renderer/text_renderer_style.dart';
 

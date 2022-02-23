@@ -1,3 +1,13 @@
+# 0.5.0
+* Using Widget `RobotDetector` to detect google bot etc. `debug` option to enable robot mode even if user agent don't have it.
+* `routeObserver` name changed to `seoRouteObserver`
+* `TextRenderer` now can have `Text` or `RichText` as `child` or simply `text` as String. if both supplied `text` property will be prioritised.
+* `style` property now have `TextRendererStyle` which is Enum, defaults to `TextRendererStyle.paragraph`
+* `LinkRenderer` have `text` property instead of `anchorText` and `href` instead of `link` to provide Link.
+* `ImageRenderer` can have `src` which is String type and child which can be any `ImageProvider`. `src` will have priority in both them.
+* `RenderScrollListener` is removed and scrolls will be automatically handled.
+* All thanks to @krokyze, see [PR11](https://github.com/iamSahdeep/seo_renderer/pull/11)
+
 # 0.4.0
 * New ScrollAware widget to listen and update renderer widgets without RenderController. see PR #9
 

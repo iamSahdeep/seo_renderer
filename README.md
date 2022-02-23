@@ -16,7 +16,7 @@ All PR's are welcome :)
 
   ```yaml
   dependencies:
-    seo_renderer: ^0.4.0
+    seo_renderer: ^0.5.0
   ```
 
 - Get the package from Pub:
@@ -152,5 +152,7 @@ SOFTWARE.
 This project is created by [Sahdeep Singh](https://github.com/iamSahdeep)
 
 > If you appreciate my work you can connect and endorse me on [LinkedIn](https://www.linkedin.com/in/iamsahdeep/) to keep me motivated :)
+
+> Don't forget to check out these [AWESOME contributors](https://github.com/iamSahdeep/seo_renderer/graphs/contributors)
 
 <img src="https://cdn-images-1.medium.com/max/1200/1*2yFbiGdcACiuLGo4dMKmJw.jpeg" width="90" height="35">
