@@ -47,6 +47,21 @@ runApp(
 );
 ```
 
+For more complex projects it's recommended to add these lines in `index.html` which will force `html` web renderer in case robot is detected. It's because `canvaskit` has some stricter limits and potenitally can break.
+
+```html
+<body>
+  ...
+  <script>
+    const regExp = new RegExp("bot|google|baidu|bing|msn|teoma|slurp|yandex", "i");
+    if (regExp.test(navigator.userAgent)) {
+      window.flutterWebRenderer = "html";
+    }
+  </script>
+  ...
+</body>
+```
+
 ### TextRenderer
 
 To render html text element above a child you pass `Text`, `RichText` as the child or simply set the `text`.
