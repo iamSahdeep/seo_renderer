@@ -36,8 +36,12 @@ class _ImageRendererState extends RouteAwareState<ImageRenderer> {
 
   void _onSize(Size size) {
     if (_size == size) return;
-    if (size.isEmpty) return;
-    _size = size;
+
+    if (size.isEmpty) {
+      _size = null;
+    } else {
+      _size = size;
+    }
 
     if (!mounted) return;
     setState(() {});
@@ -102,7 +106,7 @@ class _ImageRendererState extends RouteAwareState<ImageRenderer> {
             onSize: _onSize,
             child: widget.child,
           ),
-          if (_size != null && visible)
+          if (_size?.isEmpty == false && visible)
             IgnorePointer(
               child: HtmlElementView(viewType: viewType),
             ),
