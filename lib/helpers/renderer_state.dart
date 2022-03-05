@@ -2,9 +2,23 @@ import 'package:flutter/material.dart';
 
 final seoRouteObserver = RouteObserver<ModalRoute<void>>();
 
-abstract class RouteAwareState<T extends StatefulWidget> extends State<T>
+abstract class RendererState<T extends StatefulWidget> extends State<T>
     implements RouteAware {
+  Size? size;
   var visible = true;
+
+  void onSize(Size newSize) {
+    if (size == newSize) return;
+
+    if (newSize.isEmpty) {
+      size = null;
+    } else {
+      size = newSize;
+    }
+
+    if (!mounted) return;
+    setState(() {});
+  }
 
   @override
   void didChangeDependencies() {

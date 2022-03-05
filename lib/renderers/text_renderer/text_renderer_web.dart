@@ -3,8 +3,8 @@ import 'dart:html';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:seo_renderer/helpers/renderer_state.dart';
 import 'package:seo_renderer/helpers/robot_detector_web.dart';
-import 'package:seo_renderer/helpers/route_aware_state.dart';
 import 'package:seo_renderer/helpers/size_widget.dart';
 import 'package:seo_renderer/renderers/text_renderer/text_renderer_style.dart';
 
@@ -30,22 +30,7 @@ class TextRenderer extends StatefulWidget {
   _TextRendererState createState() => _TextRendererState();
 }
 
-class _TextRendererState extends RouteAwareState<TextRenderer> {
-  Size? _size;
-
-  void _onSize(Size size) {
-    if (_size == size) return;
-
-    if (size.isEmpty) {
-      _size = null;
-    } else {
-      _size = size;
-    }
-
-    if (!mounted) return;
-    setState(() {});
-  }
-
+class _TextRendererState extends RendererState<TextRenderer> {
   HtmlElement get _htmlElement {
     switch (widget.style) {
       case TextRendererStyle.header1:
@@ -110,20 +95,19 @@ class _TextRendererState extends RouteAwareState<TextRenderer> {
         ..style.color = '#ff0000'
         ..style.margin = '0px'
         ..style.padding = '0px'
-        ..style.width = '${_size?.width ?? 0}px'
-        ..style.height = '${_size?.height ?? 0}px',
+        ..style.width = '${size?.width ?? 0}px'
+        ..style.height = '${size?.height ?? 0}px',
     );
 
-    return SizedBox(
-      width: _size?.width,
-      height: _size?.height,
+    return SizedBox.fromSize(
+      size: size,
       child: Stack(
         children: [
           SizeWidget(
-            onSize: _onSize,
+            onSize: onSize,
             child: widget.child,
           ),
-          if (_size?.isEmpty == false && visible)
+          if (size != null && visible)
             IgnorePointer(
               child: HtmlElementView(viewType: viewType),
             ),
