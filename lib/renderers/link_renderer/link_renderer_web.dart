@@ -3,8 +3,8 @@ import 'dart:html';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:seo_renderer/helpers/renderer_state.dart';
 import 'package:seo_renderer/helpers/robot_detector_web.dart';
-import 'package:seo_renderer/helpers/route_aware_state.dart';
 import 'package:seo_renderer/helpers/size_widget.dart';
 
 /// A Widget to create the HTML Tags but with Link (href) from any [Widget].
@@ -30,17 +30,7 @@ class LinkRenderer extends StatefulWidget {
   _LinkRendererState createState() => _LinkRendererState();
 }
 
-class _LinkRendererState extends RouteAwareState<LinkRenderer> {
-  Size? _size;
-
-  void _onSize(Size size) {
-    if (_size == size) return;
-    _size = size;
-
-    if (!mounted) return;
-    setState(() {});
-  }
-
+class _LinkRendererState extends RendererState<LinkRenderer> {
   @override
   Widget build(BuildContext context) {
     if (!RobotDetector.detected(context)) {
@@ -57,20 +47,19 @@ class _LinkRendererState extends RouteAwareState<LinkRenderer> {
         ..style.color = '#ff0000'
         ..style.margin = '0px'
         ..style.padding = '0px'
-        ..style.width = '${_size?.width ?? 0}px'
-        ..style.height = '${_size?.height ?? 0}px',
+        ..style.width = '${size?.width ?? 0}px'
+        ..style.height = '${size?.height ?? 0}px',
     );
 
-    return SizedBox(
-      width: _size?.width,
-      height: _size?.height,
+    return SizedBox.fromSize(
+      size: size,
       child: Stack(
         children: [
           SizeWidget(
-            onSize: _onSize,
+            onSize: onSize,
             child: widget.child,
           ),
-          if (_size != null && visible)
+          if (size != null && visible)
             IgnorePointer(
               child: HtmlElementView(viewType: viewType),
             ),

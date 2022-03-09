@@ -4,6 +4,7 @@ import 'package:seo_renderer_example/examples/image_renderer_example.dart';
 import 'package:seo_renderer_example/examples/link_singletext_example.dart';
 import 'package:seo_renderer_example/examples/scrollable_content.dart';
 import 'package:seo_renderer_example/examples/single_text_item.dart';
+import 'package:seo_renderer_example/examples/visibility_example.dart';
 
 void main() {
   runApp(
@@ -59,6 +60,15 @@ class MyApp extends StatelessWidget {
               },
               child: TextRenderer(
                 child: Text('Image renderer'),
+              ),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => VisibilityExample()));
+              },
+              child: TextRenderer(
+                child: Text('Visibility'),
               ),
             ),
           ],
