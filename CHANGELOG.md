@@ -1,3 +1,6 @@
+# 0.6.0
+* Empty Size fix : [PR16](https://github.com/iamSahdeep/seo_renderer/pull/16)
+
 # 0.5.0
 * Using Widget `RobotDetector` to detect google bot etc. `debug` option to enable robot mode even if user agent don't have it.
 * `routeObserver` name changed to `seoRouteObserver`
