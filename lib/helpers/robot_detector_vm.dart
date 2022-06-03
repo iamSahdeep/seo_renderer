@@ -11,4 +11,8 @@ class RobotDetector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => child;
+
+  static bool detected(BuildContext context) {
+    return false;
+  }
 }
