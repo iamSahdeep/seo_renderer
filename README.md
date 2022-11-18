@@ -1,8 +1,9 @@
-# SEO Renderer
+# SEO Renderer [Not Maintaining]
 
 <a href="https://pub.dev/packages/seo_renderer"> <img height="20" alt="Pub" src="https://img.shields.io/pub/v/seo_renderer.svg?style=for-the-badge">
 </a>
 
+## Alternative : https://pub.dev/packages/seo
 A flutter plugin (_under development_) to render text, link, image widgets as html elements for SEO purpose.
 
 Created specifically for issue <https://github.com/flutter/flutter/issues/46789>
