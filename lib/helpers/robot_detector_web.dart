@@ -17,7 +17,7 @@ class RobotDetector extends StatefulWidget {
   _RobotDetectorState createState() => _RobotDetectorState();
 
   static bool detected(BuildContext context) {
-    return context.findAncestorStateOfType<_RobotDetectorState>()!._detected;
+    return context.findAncestorStateOfType<_RobotDetectorState>()?._detected ?? false;
   }
 }
 
